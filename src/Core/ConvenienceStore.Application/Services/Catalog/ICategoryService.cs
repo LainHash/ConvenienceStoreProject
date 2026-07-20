@@ -25,11 +25,11 @@ namespace ConvenienceStore.Application.Services.Catalog
             UpdateCategorySpecification specification,
             CancellationToken cancellationToken);
 
-        Task<Result<CategoryResponse>> DeleteAsync(
+        Task<Result<object>> DeleteAsync(
             string id,
             CancellationToken cancellationToken);
 
-        Task<Result<CategoryResponse>> RestoreAsync(
+        Task<Result<object>> RestoreAsync(
             string id,
             CancellationToken cancellationToken);
     }
