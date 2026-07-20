@@ -8,7 +8,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetBy
     {
         public GetCategoryByIdSpecification(GetCategoryByIdQuery query)
         {
-            Criteria = c => c.PublicId == query.Id;
+            Criteria = c => string.Equals(c.PublicId, query.Id);
 
             EnableSoftDeleteFilter();
         }
