@@ -5,7 +5,7 @@ namespace ConvenienceStore.Domain.Abstraction
     public abstract class Entity
     {
         public int Id { get; }
-        public string PublicId { get; } = Nanoid.Generate(size: 6);
+        public string PublicId { get; } = Nanoid.Generate(size: 10);
     }
 
     public abstract class AuditableEntity : Entity

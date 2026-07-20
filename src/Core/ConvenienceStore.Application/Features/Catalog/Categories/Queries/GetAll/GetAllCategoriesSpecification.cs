@@ -8,6 +8,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAl
     {
         public GetAllCategoriesSpecification(GetAllCategoriesQuery query)
         {
+            EnableSoftDeleteFilter();
         }
     }
 }

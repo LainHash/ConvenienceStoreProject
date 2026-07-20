@@ -1,10 +1,12 @@
 ﻿using ConvenienceStore.Application.Services.Business;
+using ConvenienceStore.Application.Services.Catalog;
 using ConvenienceStore.Domain.Repositories;
 using ConvenienceStore.Persistence.Context;
 using ConvenienceStore.Persistence.Repositories;
 using ConvenienceStore.Persistence.Repositories.Catalog;
 using ConvenienceStore.Persistence.Seeders;
 using ConvenienceStore.Persistence.Services.Business;
+using ConvenienceStore.Persistence.Services.Catalog;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,6 +66,8 @@ namespace ConvenienceStore.Persistence
 
             // ── Services ─────────────────────────────────────────────────────
             services.AddScoped<IDataImporter, ExcelImporter>();
+
+            services.AddScoped<ICategoryService, CategoryService>();
 
 
 

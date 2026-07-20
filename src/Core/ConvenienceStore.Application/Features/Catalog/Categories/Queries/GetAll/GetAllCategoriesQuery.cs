@@ -5,7 +5,7 @@ using MediatR;
 namespace ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll
 {
     public record GetAllCategoriesQuery
-        : IRequest<Result<CategoryResponse>>
+        : IRequest<Result<IEnumerable<CategoryResponse>>>
     {
     }
 }
