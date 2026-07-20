@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Create;
+using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Contract.DTOs.Catalog;
@@ -44,6 +45,17 @@ namespace ConvenienceStore.API.Controllers.Catalog
             CancellationToken cancellationToken)
         {
             var command = new CreateCategoryCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+            [FromRoute] string id,
+            [FromBody] UpdateCategoryRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateCategoryCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
