@@ -3,6 +3,7 @@ using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
+using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Catalog;
 using ConvenienceStore.Contract.DTOs.Catalog;
 using ConvenienceStore.Domain.Entities.Catalog;
@@ -14,14 +15,17 @@ namespace ConvenienceStore.Persistence.Services.Catalog
     internal class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
         public CategoryService(
             ICategoryRepository categoryRepository,
-            IMapper mapper)
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
         {
             _categoryRepository = categoryRepository;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<IEnumerable<CategoryResponse>>> GetAllAsync(
@@ -52,6 +56,26 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             var response = _mapper.Map<CategoryResponse>(category);
             return Result<CategoryResponse>
                 .Succeed(response, Success<Category>.Retrieved);
+        }
+
+        public async Task<Result<CategoryResponse>> CreateAsync(CreateCategoryRequest request, CancellationToken cancellationToken)
+        {
+            var existingCategory = await _categoryRepository.FindAsync(request.Name, cancellationToken);
+            if(existingCategory is not null)
+            {
+                return Result<CategoryResponse>
+                    .Fail(Error<Category>.ExistedName, HttpStatusCode.Conflict);
+            }
+
+            var category = new Category();
+            _mapper.Map(request, category);
+            _categoryRepository.Add(category);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var response = _mapper.Map<CategoryResponse>(category);
+            return Result<CategoryResponse>
+                .Succeed(response, Success<Category>.Created, HttpStatusCode.Created);
         }
     }
 }

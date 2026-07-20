@@ -1,7 +1,10 @@
-﻿using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
+﻿using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Create;
+using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
+using ConvenienceStore.Contract.DTOs.Catalog;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.Catalog
 {
@@ -32,6 +35,16 @@ namespace ConvenienceStore.API.Controllers.Catalog
         {
             var query = new GetCategoryByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateCategoryRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new CreateCategoryCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
     }

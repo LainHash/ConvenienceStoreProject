@@ -14,5 +14,9 @@ namespace ConvenienceStore.Application.Services.Catalog
         Task<Result<CategoryResponse>> GetByIdAsync(
             GetCategoryByIdSpecification specification,
             CancellationToken cancellationToken);
+
+        Task<Result<CategoryResponse>> CreateAsync(
+            CreateCategoryRequest request,
+            CancellationToken cancellationToken);
     }
 }
