@@ -1,0 +1,43 @@
+﻿namespace ConvenienceStore.Domain.Abstraction
+{
+    public abstract class Entity
+    {
+        public int Id { get; }
+        public Guid PublicId { get; } = Guid.NewGuid();
+    }
+
+    public abstract class AuditableEntity
+    {
+        public DateTime CreatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; }
+
+        public void MarkCreated(DateTime now)
+        {
+            CreatedAt = now;
+            UpdatedAt = now;
+        }
+
+        public void MarkUpdated(DateTime now)
+        {
+            UpdatedAt = now;
+        }
+    }
+
+    public abstract class SoftDeletableEntity
+    {
+        public bool IsDeleted { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
+
+        public void SoftDelete()
+        {
+            IsDeleted = true;
+            DeletedAt = DateTime.UtcNow;
+        }
+
+        public void Restore()
+        {
+            IsDeleted = false;
+            DeletedAt = null;
+        }
+    }
+}
