@@ -1,5 +1,8 @@
 ﻿using ConvenienceStore.Application.Services.Business;
+using ConvenienceStore.Domain.Repositories;
 using ConvenienceStore.Persistence.Context;
+using ConvenienceStore.Persistence.Repositories;
+using ConvenienceStore.Persistence.Repositories.Catalog;
 using ConvenienceStore.Persistence.Seeders;
 using ConvenienceStore.Persistence.Services.Business;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +39,28 @@ namespace ConvenienceStore.Persistence
 
             // ── AutoMapper ───────────────────────────────────────────────────
             services.AddAutoMapper(cfg => cfg.AddMaps(typeof(DependencyInjection).Assembly));
+
+            // ── Repositories ─────────────────────────────────────────────────
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            var assembly = typeof(CategoryRepository).Assembly;
+
+            foreach (var type in assembly.GetTypes())
+            {
+                if (!type.IsClass || type.IsAbstract)
+                    continue;
+
+                if (!type.Name.EndsWith("Repository"))
+                    continue;
+
+                foreach (var iface in type.GetInterfaces())
+                {
+                    if (iface.Name.EndsWith("Repository"))
+                    {
+                        services.AddScoped(iface, type);
+                    }
+                }
+            }
 
             // ── Services ─────────────────────────────────────────────────────
             services.AddScoped<IDataImporter, ExcelImporter>();
