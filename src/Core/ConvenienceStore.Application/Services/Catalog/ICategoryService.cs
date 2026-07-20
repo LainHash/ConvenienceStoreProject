@@ -3,6 +3,7 @@ using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Catalog;
+using NanoidDotNet;
 
 namespace ConvenienceStore.Application.Services.Catalog
 {
@@ -22,6 +23,14 @@ namespace ConvenienceStore.Application.Services.Catalog
 
         Task<Result<CategoryResponse>> UpdateAsync(
             UpdateCategorySpecification specification,
+            CancellationToken cancellationToken);
+
+        Task<Result<CategoryResponse>> DeleteAsync(
+            string id,
+            CancellationToken cancellationToken);
+
+        Task<Result<CategoryResponse>> RestoreAsync(
+            string id,
             CancellationToken cancellationToken);
     }
 }

@@ -10,7 +10,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Categories.Commands.Upda
         public UpdateCategoryRequest Body { get; set; }
         public UpdateCategorySpecification(UpdateCategoryCommand command)
         {
-            Criteria = c => string.Equals(c.PublicId, command.id);
+            Criteria = c => string.Equals(c.PublicId, command.Id);
             Body = command.Body;
         }
     }

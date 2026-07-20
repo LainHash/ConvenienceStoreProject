@@ -2,9 +2,9 @@
 using ConvenienceStore.Contract.DTOs.Catalog;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update
+namespace ConvenienceStore.Application.Features.Catalog.Categories.Commands.Delete
 {
-    public record UpdateCategoryCommand(string Id, UpdateCategoryRequest Body)
+    public record DeleteCategoryCommand(string Id)
         : IRequest<Result<CategoryResponse>>
     {
     }

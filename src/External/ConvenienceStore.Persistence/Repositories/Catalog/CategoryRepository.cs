@@ -13,9 +13,15 @@ namespace ConvenienceStore.Persistence.Repositories.Catalog
             _context = context;
         }
 
-        public async Task<Category?> FindAsync(string name, CancellationToken cancellationToken = default)
+        public async Task<Category?> FindNameAsync(string name, CancellationToken cancellationToken = default)
         {
-            return await _context.Categories.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
+            return await _context.Categories
+                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+        }
+
+        public async Task<Category?> FindAsync(string id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(x => string.Equals(x.PublicId, id), cancellationToken);
         }
     }
 }
