@@ -18,4 +18,8 @@
 		<ProjectReference Include="..\ConvenienceStore.Domain\ConvenienceStore.Domain.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Features\" />
+	</ItemGroup>
+
 </Project>
