@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Catalog;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -10,6 +11,8 @@ namespace ConvenienceStore.Persistence.Context
             : base(options)
         {
         }
+
+        public DbSet<Category> Categories { get; set; } = null!;
 
         // ── Model building ──────────────────────────────────────────────────
         protected override void OnModelCreating(ModelBuilder modelBuilder)
