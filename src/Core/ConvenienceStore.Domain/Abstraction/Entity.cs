@@ -1,9 +1,11 @@
-﻿namespace ConvenienceStore.Domain.Abstraction
+﻿using NanoidDotNet;
+
+namespace ConvenienceStore.Domain.Abstraction
 {
     public abstract class Entity
     {
         public int Id { get; }
-        public Guid PublicId { get; } = Guid.NewGuid();
+        public string PublicId { get; } = Nanoid.Generate(size: 6);
     }
 
     public abstract class AuditableEntity : Entity
