@@ -6,7 +6,7 @@
         public Guid PublicId { get; } = Guid.NewGuid();
     }
 
-    public abstract class AuditableEntity
+    public abstract class AuditableEntity : Entity
     {
         public DateTime CreatedAt { get; private set; }
         public DateTime UpdatedAt { get; private set; }
@@ -23,7 +23,7 @@
         }
     }
 
-    public abstract class SoftDeletableEntity
+    public abstract class SoftDeletableEntity  : AuditableEntity
     {
         public bool IsDeleted { get; private set; }
         public DateTime? DeletedAt { get; private set; }
