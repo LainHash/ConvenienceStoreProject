@@ -17,5 +17,7 @@
         public static string Occupied = $"{typeof(TEntity).Name} occupied.";
 
         public static string Empty = $"{typeof(TEntity).Name} empty.";
+
+        public static string ExistedName = $"{typeof(TEntity).Name} with this name already existed.";
     }
 }

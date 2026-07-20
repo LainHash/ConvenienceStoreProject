@@ -9,8 +9,10 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
     {
         public CategoryMapping()
         {
-            CreateMap<CategoryRecord, Category>();
+            CreateMap<CategoryRecord, Category>().ReverseMap();
             CreateMap<Category, CategoryResponse>();
+            CreateMap<CreateCategoryRequest, Category>();
+            CreateMap<UpdateCategoryRequest, Category>();
         }
     }
 }
