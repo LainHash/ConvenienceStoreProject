@@ -12,6 +12,7 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
             CreateMap<CategoryRecord, Category>().ReverseMap();
             CreateMap<Category, CategoryResponse>();
             CreateMap<CreateCategoryRequest, Category>();
+            CreateMap<UpdateCategoryRequest, Category>();
         }
     }
 }

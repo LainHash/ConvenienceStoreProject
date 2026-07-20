@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
@@ -76,6 +77,25 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             var response = _mapper.Map<CategoryResponse>(category);
             return Result<CategoryResponse>
                 .Succeed(response, Success<Category>.Created, HttpStatusCode.Created);
+        }
+
+        public async Task<Result<CategoryResponse>> UpdateAsync(UpdateCategorySpecification specification, CancellationToken cancellationToken)
+        {
+            var category = await _categoryRepository.FindAsync(specification, cancellationToken);
+            if (category is null)
+            {
+                return Result<CategoryResponse>
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+            }
+
+            _mapper.Map(specification.Body, category);
+            _categoryRepository.Update(category);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var response = _mapper.Map<CategoryResponse>(category);
+            return Result<CategoryResponse>
+                .Succeed(response, Success<Category>.Updated, HttpStatusCode.Accepted);
         }
     }
 }

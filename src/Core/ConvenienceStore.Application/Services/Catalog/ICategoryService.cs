@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
+﻿using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
+using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Catalog;
@@ -17,6 +18,10 @@ namespace ConvenienceStore.Application.Services.Catalog
 
         Task<Result<CategoryResponse>> CreateAsync(
             CreateCategoryRequest request,
+            CancellationToken cancellationToken);
+
+        Task<Result<CategoryResponse>> UpdateAsync(
+            UpdateCategorySpecification specification,
             CancellationToken cancellationToken);
     }
 }
