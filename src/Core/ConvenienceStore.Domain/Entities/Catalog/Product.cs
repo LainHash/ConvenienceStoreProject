@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Inventory;
 
 namespace ConvenienceStore.Domain.Entities.Catalog
 {
@@ -12,5 +13,6 @@ namespace ConvenienceStore.Domain.Entities.Catalog
 
         public Category Category { get; private set; } = null!;
         public Brand Brand { get; private set; } = null!;
+        public ProductStock ProductStock { get; private set; } = null!;
     }
 }
