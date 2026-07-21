@@ -8,6 +8,10 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll
     {
         public GetAllProductSpecification(GetAllProductQuery query)
         {
+            AddInclude(x => x.ProductStock);
+            AddInclude(x => x.Category);
+            AddInclude(x => x.Brand);
+
             EnableSoftDeleteFilter();
         }
     }
