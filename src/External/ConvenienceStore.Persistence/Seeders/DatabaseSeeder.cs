@@ -18,6 +18,7 @@ namespace ConvenienceStore.Persistence.Seeders
         public async Task SeedAllAsync()
         {
             await SeedAsync<CategorySeeder>(_context);
+            await SeedAsync<BrandSeeder>(_context);
         }
 
         private async Task SeedAsync<TSeeder>(ConvenienceStoreDbContext context) where TSeeder : IDataSeeder
