@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Application.Services.Business;
+using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Catalog;
 using ConvenienceStore.Domain.Repositories;
 using ConvenienceStore.Persistence.Context;
@@ -7,6 +7,8 @@ using ConvenienceStore.Persistence.Repositories.Catalog;
 using ConvenienceStore.Persistence.Seeders;
 using ConvenienceStore.Persistence.Services.Business;
 using ConvenienceStore.Persistence.Services.Catalog;
+using ConvenienceStore.Application.Services.Territory;
+using ConvenienceStore.Persistence.Services.Territory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -69,8 +71,8 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<ICategoryService, CategoryService>();
-
-
+            services.AddScoped<IBranchService, BranchService>();
+            services.AddScoped<IBrandService, BrandService>();
 
             return services;
         }

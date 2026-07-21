@@ -6,10 +6,9 @@ using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Catalog;
-using ConvenienceStore.Contract.DTOs.Catalog;
+using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Repositories.Catalog;
-using ConvenienceStore.Domain.Specifications;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.Catalog
@@ -99,18 +98,18 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(response, Success<Category>.Updated, HttpStatusCode.Accepted);
         }
 
-        public async Task<Result<CategoryResponse>> DeleteAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<object>> DeleteAsync(string id, CancellationToken cancellationToken)
         {
             var category = await _categoryRepository.FindAsync(id, cancellationToken);
             if (category is null)
             {
-                return Result<CategoryResponse>
+                return Result<object>
                     .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
             }
 
             if (category.IsDeleted)
             {
-                return Result<CategoryResponse>
+                return Result<object>
                     .Fail(Error<Category>.AlreadyDeleted, HttpStatusCode.Conflict);
             }
 
@@ -119,23 +118,22 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var response = _mapper.Map<CategoryResponse>(category);
-            return Result<CategoryResponse>
-                .Succeed(response, Success<Category>.Deleted, HttpStatusCode.Accepted);
+            return Result<object>
+                .Succeed(default, Success<Category>.Deleted, HttpStatusCode.Accepted);
         }
 
-        public async Task<Result<CategoryResponse>> RestoreAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<object>> RestoreAsync(string id, CancellationToken cancellationToken)
         {
             var category = await _categoryRepository.FindAsync(id, cancellationToken);
             if (category is null)
             {
-                return Result<CategoryResponse>
+                return Result<object>
                     .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
             }
 
             if (!category.IsDeleted)
             {
-                return Result<CategoryResponse>
+                return Result<object>
                     .Fail(Error<Category>.NotYetDeleted, HttpStatusCode.Conflict);
             }
 
@@ -144,9 +142,8 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            var response = _mapper.Map<CategoryResponse>(category);
-            return Result<CategoryResponse>
-                .Succeed(response, Success<Category>.Deleted, HttpStatusCode.Accepted);
+            return Result<object>
+                .Succeed(default, Success<Category>.Deleted, HttpStatusCode.Accepted);
         }
     }
 }

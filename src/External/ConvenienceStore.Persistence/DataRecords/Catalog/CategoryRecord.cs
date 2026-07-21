@@ -1,6 +1,6 @@
 ﻿namespace ConvenienceStore.Persistence.DataRecords.Catalog
 {
-    public class CategoryRecord
+    internal class CategoryRecord
     {
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;

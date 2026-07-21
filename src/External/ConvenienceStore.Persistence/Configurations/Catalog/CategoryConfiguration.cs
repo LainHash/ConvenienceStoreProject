@@ -27,7 +27,7 @@ namespace ConvenienceStore.Persistence.Configurations.Catalog
                 .IsUnique();
 
             builder.Property(x => x.Description)
-                .HasMaxLength(500);
+                .HasMaxLength(1000);
         }
     }
 }

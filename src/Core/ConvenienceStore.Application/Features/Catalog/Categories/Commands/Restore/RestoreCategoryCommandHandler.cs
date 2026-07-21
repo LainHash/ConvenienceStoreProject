@@ -6,7 +6,7 @@ using MediatR;
 namespace ConvenienceStore.Application.Features.Catalog.Categories.Commands.Restore
 {
     internal class RestoreCategoryCommandHandler
-        : IRequestHandler<RestoreCategoryCommand, Result<CategoryResponse>>
+        : IRequestHandler<RestoreCategoryCommand, Result<object>>
     {
         private readonly ICategoryService _categoryService;
 
@@ -15,7 +15,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Categories.Commands.Rest
             _categoryService = categoryService;
         }
 
-        public async Task<Result<CategoryResponse>> Handle(RestoreCategoryCommand request, CancellationToken cancellationToken)
+        public async Task<Result<object>> Handle(RestoreCategoryCommand request, CancellationToken cancellationToken)
         {
             var response = await _categoryService.RestoreAsync(request.Id, cancellationToken);
             return response;

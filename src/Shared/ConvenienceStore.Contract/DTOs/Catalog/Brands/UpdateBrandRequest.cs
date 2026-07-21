@@ -1,6 +1,6 @@
-﻿namespace ConvenienceStore.Contract.DTOs.Catalog
+namespace ConvenienceStore.Contract.DTOs.Catalog
 {
-    public class UpdateCategoryRequest
+    public class UpdateBrandRequest
     {
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
