@@ -10,7 +10,8 @@ namespace ConvenienceStore.Persistence.Mapping.Territory
         public BranchMapping()
         {
             CreateMap<BranchRecord, Branch>().ReverseMap();
-            CreateMap<Branch, BranchResponse>();
+            CreateMap<Branch, BranchResponse>()
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
             CreateMap<CreateBranchRequest, Branch>();
             CreateMap<UpdateBranchRequest, Branch>();
         }
