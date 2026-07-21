@@ -13,14 +13,9 @@ namespace ConvenienceStore.API.Controllers.Catalog
 {
     [Route("api/catalog/[controller]")]
     [ApiController]
-    public class BrandsController : ControllerBase
+    public class BrandsController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public BrandsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet]
         public async Task<ActionResult<Result<IEnumerable<BrandResponse>>>> GetAll(CancellationToken cancellationToken)

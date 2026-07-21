@@ -12,14 +12,9 @@ namespace ConvenienceStore.API.Controllers.Catalog
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController(IMediator mediator) : ControllerBase
     {
-        private readonly IMediator _mediator;
-
-        public CategoriesController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
+        private readonly IMediator _mediator = mediator;
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
