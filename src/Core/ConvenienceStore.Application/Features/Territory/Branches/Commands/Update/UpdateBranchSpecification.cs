@@ -1,3 +1,4 @@
+using ConvenienceStore.Contract.DTOs.Territory.Branches;
 using ConvenienceStore.Domain.Entities.Territory;
 using ConvenienceStore.Domain.Specifications;
 
@@ -6,7 +7,7 @@ namespace ConvenienceStore.Application.Features.Territory.Branches.Commands.Upda
     public class UpdateBranchSpecification
         : BaseSpecification<Branch>
     {
-        public Contract.DTOs.Territory.UpdateBranchRequest Body { get; }
+        public UpdateBranchRequest Body { get; }
 
         public UpdateBranchSpecification(UpdateBranchCommand command)
         {

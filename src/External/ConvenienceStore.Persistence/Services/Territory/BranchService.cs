@@ -6,7 +6,7 @@ using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Territory;
-using ConvenienceStore.Contract.DTOs.Territory;
+using ConvenienceStore.Contract.DTOs.Territory.Branches;
 using ConvenienceStore.Domain.Entities.Territory;
 using ConvenienceStore.Domain.Repositories.Territory;
 using System.Net;

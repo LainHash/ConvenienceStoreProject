@@ -1,8 +1,8 @@
-namespace ConvenienceStore.Contract.DTOs.Territory
+namespace ConvenienceStore.Contract.DTOs.Territory.Branches
 {
     public class BranchResponse
     {
-        public string PublicId { get; set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
         public string Country { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;
         public string Address { get; set; } = string.Empty;

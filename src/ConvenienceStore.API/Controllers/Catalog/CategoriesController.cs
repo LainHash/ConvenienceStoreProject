@@ -4,7 +4,7 @@ using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Restore;
 using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
-using ConvenienceStore.Contract.DTOs.Catalog;
+using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

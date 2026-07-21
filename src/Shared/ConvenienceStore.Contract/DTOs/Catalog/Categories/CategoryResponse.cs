@@ -1,4 +1,4 @@
-﻿namespace ConvenienceStore.Contract.DTOs.Catalog
+﻿namespace ConvenienceStore.Contract.DTOs.Catalog.Categories
 {
     public class CategoryResponse
     {

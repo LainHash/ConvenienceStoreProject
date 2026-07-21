@@ -2,7 +2,7 @@
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Results;
-using ConvenienceStore.Contract.DTOs.Catalog;
+using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using NanoidDotNet;
 
 namespace ConvenienceStore.Application.Services.Catalog

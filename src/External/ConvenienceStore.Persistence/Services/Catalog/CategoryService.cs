@@ -6,7 +6,7 @@ using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Catalog;
-using ConvenienceStore.Contract.DTOs.Catalog;
+using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Repositories.Catalog;
 using System.Net;

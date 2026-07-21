@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using ConvenienceStore.Contract.DTOs.Catalog;
+using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Persistence.DataRecords.Catalog;
 

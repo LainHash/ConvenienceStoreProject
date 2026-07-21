@@ -1,6 +1,6 @@
-namespace ConvenienceStore.Contract.DTOs.Territory
+namespace ConvenienceStore.Contract.DTOs.Territory.Branches
 {
-    public class UpdateBranchRequest
+    public class CreateBranchRequest
     {
         public string Country { get; set; } = string.Empty;
         public string City { get; set; } = string.Empty;

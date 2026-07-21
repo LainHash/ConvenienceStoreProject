@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Contract.DTOs.Catalog;
+﻿using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Specifications;
 

@@ -1,5 +1,5 @@
 using AutoMapper;
-using ConvenienceStore.Contract.DTOs.Territory;
+using ConvenienceStore.Contract.DTOs.Territory.Branches;
 using ConvenienceStore.Domain.Entities.Territory;
 using ConvenienceStore.Persistence.DataRecords.Territory;
 

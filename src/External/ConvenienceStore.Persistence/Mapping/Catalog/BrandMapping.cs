@@ -11,7 +11,7 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
         {
             CreateMap<BrandRecord, Brand>().ReverseMap();
             CreateMap<Brand, BrandResponse>()
-                .ForMember(dest => dest.PublicId, opt => opt.MapFrom(src => src.PublicId));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
             CreateMap<CreateBrandRequest, Brand>();
             CreateMap<UpdateBrandRequest, Brand>();
         }

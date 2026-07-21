@@ -4,7 +4,7 @@ using ConvenienceStore.Application.Features.Territory.Branches.Commands.Restore;
 using ConvenienceStore.Application.Features.Territory.Branches.Commands.Update;
 using ConvenienceStore.Application.Features.Territory.Branches.Queries.GetAll;
 using ConvenienceStore.Application.Features.Territory.Branches.Queries.GetById;
-using ConvenienceStore.Contract.DTOs.Territory;
+using ConvenienceStore.Contract.DTOs.Territory.Branches;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
