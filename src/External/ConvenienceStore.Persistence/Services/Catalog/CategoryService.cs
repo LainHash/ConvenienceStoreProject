@@ -9,7 +9,6 @@ using ConvenienceStore.Application.Services.Catalog;
 using ConvenienceStore.Contract.DTOs.Catalog;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Repositories.Catalog;
-using ConvenienceStore.Domain.Specifications;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.Catalog

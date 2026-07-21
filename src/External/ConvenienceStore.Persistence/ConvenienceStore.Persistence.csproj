@@ -43,6 +43,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Folder Include="Configurations\Personnel\" />
 	  <Folder Include="Data\" />
 	</ItemGroup>
 

@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Domain.Entities.Territory;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -13,6 +14,7 @@ namespace ConvenienceStore.Persistence.Context
         }
 
         public DbSet<Category> Categories { get; set; } = null!;
+        public DbSet<Branch> Branches { get; set; } = null!;
 
         // ── Model building ──────────────────────────────────────────────────
         protected override void OnModelCreating(ModelBuilder modelBuilder)
