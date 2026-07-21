@@ -72,6 +72,7 @@ namespace ConvenienceStore.Persistence
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IBranchService, BranchService>();
+            services.AddScoped<IBrandService, BrandService>();
 
             return services;
         }
