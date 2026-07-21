@@ -11,12 +11,12 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 {
     internal class ProductService : IProductService
     {
-        private readonly IProductRespository _productRespository;
+        private readonly IProductRepository _productRespository;
         private readonly IMapper _mapper;
 
         public ProductService(
             IMapper mapper,
-            IProductRespository productRespository)
+            IProductRepository productRespository)
         {
             _mapper = mapper;
             _productRespository = productRespository;

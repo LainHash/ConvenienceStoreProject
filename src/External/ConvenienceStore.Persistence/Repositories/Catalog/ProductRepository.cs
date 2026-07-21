@@ -4,7 +4,7 @@ using ConvenienceStore.Persistence.Context;
 
 namespace ConvenienceStore.Persistence.Repositories.Catalog
 {
-    internal class ProductRepository : Repository<Product>, IProductRespository
+    internal class ProductRepository : Repository<Product>, IProductRepository
     {
         public ProductRepository(ConvenienceStoreDbContext context) : base(context)
         {

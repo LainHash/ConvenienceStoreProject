@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Persistence.Context;
 using ConvenienceStore.Persistence.Seeders.Catalog;
+using ConvenienceStore.Persistence.Seeders.Inventory;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ConvenienceStore.Persistence.Seeders
@@ -19,6 +20,8 @@ namespace ConvenienceStore.Persistence.Seeders
         {
             await SeedAsync<CategorySeeder>(_context);
             await SeedAsync<BrandSeeder>(_context);
+            await SeedAsync<ProductSeeder>(_context);
+            await SeedAsync<ProductStockSeeder>(_context);
         }
 
         private async Task SeedAsync<TSeeder>(ConvenienceStoreDbContext context) where TSeeder : IDataSeeder

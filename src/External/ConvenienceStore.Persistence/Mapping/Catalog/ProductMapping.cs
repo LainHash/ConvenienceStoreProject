@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Contract.DTOs.Catalog.Products;
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Persistence.DataRecords.Catalog;
 
 namespace ConvenienceStore.Persistence.Mapping.Catalog
 {
@@ -8,6 +9,8 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
     {
         public ProductMapping()
         {
+            CreateMap<ProductRecord, Product>().ReverseMap();
+
             CreateMap<Product, ProductResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
