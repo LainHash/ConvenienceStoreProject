@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Entities.Territory;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -15,6 +16,8 @@ namespace ConvenienceStore.Persistence.Context
 
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
+        public DbSet<Product> Products { get; set; } = null!;
+        public DbSet<ProductStock> ProductStocks { get; set; } = null!;
 
         public DbSet<Branch> Branches { get; set; } = null!;
 
