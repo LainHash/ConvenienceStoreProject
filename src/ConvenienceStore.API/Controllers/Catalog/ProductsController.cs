@@ -1,6 +1,7 @@
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Create;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById;
 using ConvenienceStore.Contract.DTOs.Catalog.Products;
@@ -38,6 +39,17 @@ namespace ConvenienceStore.API.Controllers.Catalog
             CancellationToken cancellationToken)
         {
             var command = new CreateProductCommand(body);
+            var response = await _mediator.Send(command, cancellationToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+            [FromRoute] string id,
+            [FromBody] UpdateProductRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateProductCommand(id, body);
             var response = await _mediator.Send(command, cancellationToken);
             return StatusCode(response.StatusCode, response);
         }
