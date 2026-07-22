@@ -1,4 +1,6 @@
 using AutoMapper;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
@@ -44,7 +46,9 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(response, Success<Product>.Retrieved);
         }
 
-        public async Task<Result<ProductResponse>> GetByIdAsync(GetProductByIdSpecification specification, CancellationToken cancellationToken)
+        public async Task<Result<ProductResponse>> GetByIdAsync(
+            GetProductByIdSpecification specification,
+            CancellationToken cancellationToken)
         {
             var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
@@ -58,9 +62,11 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(response, Success<Product>.Retrieved);
         }
 
-        public async Task<Result<object>> DeleteAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<object>> DeleteAsync(
+            DeleteProductSpecification specification,
+            CancellationToken cancellationToken)
         {
-            var product = await _productRepository.FindAsync(id, cancellationToken);
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
             {
                 return Result<object>
@@ -74,6 +80,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.SoftDelete();
+            product.ProductStock.SoftDelete();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -82,9 +89,11 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(default, Success<Product>.Deleted, HttpStatusCode.Accepted);
         }
 
-        public async Task<Result<object>> RestoreAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<object>> RestoreAsync(
+            RestoreProductSpecification specification,
+            CancellationToken cancellationToken)
         {
-            var product = await _productRepository.FindAsync(id, cancellationToken);
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
             {
                 return Result<object>
@@ -98,6 +107,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.Restore();
+            product.ProductStock.Restore();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

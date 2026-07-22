@@ -16,7 +16,8 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete
 
         public async Task<Result<object>> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            var response = await _productService.DeleteAsync(request.Id, cancellationToken);
+            var specification = new DeleteProductSpecification(request);
+            var response = await _productService.DeleteAsync(specification, cancellationToken);
             return response;
         }
     }
