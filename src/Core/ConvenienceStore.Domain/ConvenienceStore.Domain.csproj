@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="Entities\Personnel\" />
+    <Folder Include="Enums\" />
   </ItemGroup>
 
 </Project>
