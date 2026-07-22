@@ -2,6 +2,7 @@ using AutoMapper;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Create;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
@@ -98,7 +99,40 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 
             var response = _mapper.Map<ProductResponse>(createdProduct);
             return Result<ProductResponse>
-                .Succeed(response, Success<Product>.Retrieved);
+                .Succeed(response, Success<Product>.Created, HttpStatusCode.Created);
+        }
+
+        public async Task<Result<ProductResponse>> UpdateAsync(
+            UpdateProductSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var category = await _categoryRepository.FindAsync(specification.Body.CategoryId, cancellationToken);
+            if (category is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var brand = await _brandRepository.FindAsync(specification.Body.BrandId, cancellationToken);
+            if (brand is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
+            if (product is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Product>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            product.Update(category.Id, brand.Id);
+            _mapper.Map(specification.Body, product);
+
+            var response = _mapper.Map<ProductResponse>(product);
+            return Result<ProductResponse>
+                .Succeed(response, Success<Product>.Updated, HttpStatusCode.Accepted);
         }
 
         public async Task<Result<object>> DeleteAsync(

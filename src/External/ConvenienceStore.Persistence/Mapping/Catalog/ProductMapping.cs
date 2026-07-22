@@ -21,11 +21,18 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
                 .ForMember(dest => dest.QuantityOnHand, opt => opt.MapFrom(src => src.ProductStock.QuantityOnHand));
 
             CreateMap<CreateProductRequest, Product>()
-                .ForMember(dest => dest.ProductStock.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
-                .ForMember(dest => dest.ProductStock.Unit, opt => opt.MapFrom(src => src.Unit))
-                .ForMember(dest => dest.ProductStock.QuantityOnHand, opt => opt.MapFrom(src => src.QuantityOnHand))
-                .ForMember(dest => dest.CategoryId, opt => opt.Ignore())
-                .ForMember(dest => dest.BrandId, opt => opt.Ignore());
+                .ForPath(dest => dest.ProductStock.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForPath(dest => dest.ProductStock.Unit, opt => opt.MapFrom(src => src.Unit))
+                .ForPath(dest => dest.ProductStock.QuantityOnHand, opt => opt.MapFrom(src => src.QuantityOnHand))
+                .ForPath(dest => dest.CategoryId, opt => opt.Ignore())
+                .ForPath(dest => dest.BrandId, opt => opt.Ignore());
+
+            CreateMap<UpdateProductRequest, Product>()
+                .ForPath(dest => dest.ProductStock.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForPath(dest => dest.ProductStock.Unit, opt => opt.MapFrom(src => src.Unit))
+                .ForPath(dest => dest.ProductStock.QuantityOnHand, opt => opt.MapFrom(src => src.QuantityOnHand))
+                .ForPath(dest => dest.CategoryId, opt => opt.Ignore())
+                .ForPath(dest => dest.BrandId, opt => opt.Ignore());
         }
     }
 }

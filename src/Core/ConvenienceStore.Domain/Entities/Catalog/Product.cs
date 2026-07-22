@@ -30,5 +30,11 @@ namespace ConvenienceStore.Domain.Entities.Catalog
         {
             return new Product(categoryId, brandId);
         }
+        
+        public void Update(int categoryId, int brandId)
+        {
+            CategoryId = categoryId;
+            BrandId = brandId;
+        }
     }
 }
