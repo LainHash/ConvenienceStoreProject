@@ -42,7 +42,6 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             GetAllProductSpecification specification,
             CancellationToken cancellationToken)
         {
-            var page = (specification.Skip / specification.Take) + 1;
             var totalItems = await _productRepository.CountAsync(specification, cancellationToken);
 
             var products = await _productRepository.ToListAsync(specification, cancellationToken);
@@ -54,7 +53,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 
             var response = _mapper.Map<IEnumerable<ProductResponse>>(products);
             return PageResult<IEnumerable<ProductResponse>>
-                .Succeed(response,Success<Product>.Retrieved, totalItems, page, specification.Take);
+                .Succeed(response,Success<Product>.Retrieved, totalItems, specification.Skip, specification.Take);
         }
 
         public async Task<Result<ProductResponse>> GetByIdAsync(

@@ -14,34 +14,34 @@ namespace ConvenienceStore.Application.Models.Results
         {
 
         }
-        private PageResult(
-            T? data,
+
+        private PageResult(T? data,
             bool isSucceed,
             string message,
             int totalItems,
-            int indexPage,
-            int pageSize,
+            int skip,
+            int take,
             HttpStatusCode statusCode)
             : base(data, isSucceed, message, statusCode)
         {
             TotalItems = totalItems;
-            TotalPages = (int)Math.Ceiling((decimal)totalItems / pageSize);
-            IndexPage = indexPage;
-            PageSize = pageSize;
+            TotalPages = (int)Math.Ceiling((decimal)totalItems / take);
+            IndexPage = skip / take + 1;
+            PageSize = take;
         }
 
         public static PageResult<T> Succeed(
             T? data,
             string message,
             int totalItems,
-            int indexPage = 1,
-            int pageSize = 12,
+            int skip,
+            int take,
             HttpStatusCode statusCode = HttpStatusCode.OK)
         {
-            return new(data, true, message, totalItems, indexPage, pageSize, statusCode);
+            return new(data, true, message, totalItems, skip, take, statusCode);
         }
 
-        public new static PageResult<T> Fail(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest) 
+        public new static PageResult<T> Fail(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
             => new(default, false, message, statusCode);
     }
 }
