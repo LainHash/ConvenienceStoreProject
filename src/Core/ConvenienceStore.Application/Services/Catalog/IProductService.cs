@@ -11,7 +11,7 @@ namespace ConvenienceStore.Application.Services.Catalog
 {
     public interface IProductService
     {
-        Task<Result<IEnumerable<ProductResponse>>> GetAllAsync(
+        Task<PageResult<IEnumerable<ProductResponse>>> GetAllAsync(
             GetAllProductSpecification specification,
             CancellationToken cancellationToken);
         Task<Result<ProductResponse>> GetByIdAsync(

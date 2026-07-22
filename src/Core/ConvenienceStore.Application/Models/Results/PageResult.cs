@@ -9,6 +9,11 @@ namespace ConvenienceStore.Application.Models.Results
         public int IndexPage { get; set; }
         public int PageSize { get; set; }
 
+        private PageResult(T? data, bool isSucceed, string message, HttpStatusCode statusCode)
+            : base(data, isSucceed, message, statusCode)
+        {
+
+        }
         private PageResult(
             T? data,
             bool isSucceed,
@@ -35,5 +40,8 @@ namespace ConvenienceStore.Application.Models.Results
         {
             return new(data, true, message, totalItems, indexPage, pageSize, statusCode);
         }
+
+        public new static PageResult<T> Fail(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest) 
+            => new(default, false, message, statusCode);
     }
 }

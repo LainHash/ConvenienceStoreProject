@@ -1,14 +1,12 @@
-﻿
-
-using ConvenienceStore.Application.Enums;
-using ConvenienceStore.Application.Extensions;
+﻿using ConvenienceStore.Application.Enums;
 
 namespace ConvenienceStore.Application.Models
 {
     public abstract record PageQuery
     {
-        public string? Keyword { get; init; }
-        public string SortBy { get; init; } = SortField.CreatedAt.ToSort(SortDirection.Asc);
+        public string Keyword { get; init; } = "";
+        public SortField SortField { get; set; } = SortField.Name;
+        public SortDirection Direction { get; set; } = SortDirection.Asc;
         public int Page { get; init; } = 1;
         public int PageSize { get; init; } = 12;
     }

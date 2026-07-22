@@ -38,20 +38,23 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             _brandRepository = brandRepository;
         }
 
-        public async Task<Result<IEnumerable<ProductResponse>>> GetAllAsync(
+        public async Task<PageResult<IEnumerable<ProductResponse>>> GetAllAsync(
             GetAllProductSpecification specification,
             CancellationToken cancellationToken)
         {
+            var page = (specification.Skip / specification.Take) + 1;
+            var totalItems = await _productRepository.CountAsync(specification, cancellationToken);
+
             var products = await _productRepository.ToListAsync(specification, cancellationToken);
             if (!products.Any())
             {
-                return Result<IEnumerable<ProductResponse>>
+                return PageResult<IEnumerable<ProductResponse>>
                     .Fail(Error<Product>.EmptyList);
             }
 
             var response = _mapper.Map<IEnumerable<ProductResponse>>(products);
-            return Result<IEnumerable<ProductResponse>>
-                .Succeed(response, Success<Product>.Retrieved);
+            return PageResult<IEnumerable<ProductResponse>>
+                .Succeed(response,Success<Product>.Retrieved, totalItems, page, specification.Take);
         }
 
         public async Task<Result<ProductResponse>> GetByIdAsync(
@@ -75,7 +78,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             CancellationToken cancellationToken)
         {
             var category = await _categoryRepository.FindAsync(specification.Body.CategoryId, cancellationToken);
-            if(category is null)
+            if (category is null)
             {
                 return Result<ProductResponse>
                     .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
