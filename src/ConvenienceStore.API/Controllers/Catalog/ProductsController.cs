@@ -1,7 +1,9 @@
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Create;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById;
+using ConvenienceStore.Contract.DTOs.Catalog.Products;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +29,16 @@ namespace ConvenienceStore.API.Controllers.Catalog
         {
             var query = new GetProductByIdQuery(id);
             var response = await _mediator.Send(query, cancellationToken);
+            return StatusCode(response.StatusCode, response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateProductRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new CreateProductCommand(body);
+            var response = await _mediator.Send(command, cancellationToken);
             return StatusCode(response.StatusCode, response);
         }
 

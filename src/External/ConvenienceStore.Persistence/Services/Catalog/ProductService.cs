@@ -93,7 +93,12 @@ namespace ConvenienceStore.Persistence.Services.Catalog
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
-            throw new NotImplementedException();
+            specification.ApplyCriteria(product.Id);
+            var createdProduct = await _productRepository.FindAsync(specification, cancellationToken);
+
+            var response = _mapper.Map<ProductResponse>(createdProduct);
+            return Result<ProductResponse>
+                .Succeed(response, Success<Product>.Retrieved);
         }
 
         public async Task<Result<object>> DeleteAsync(
