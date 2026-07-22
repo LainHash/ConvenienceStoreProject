@@ -6,7 +6,7 @@ using MediatR;
 namespace ConvenienceStore.Application.Features.Catalog.Brands.Queries.GetAll
 {
     internal class GetAllBrandsQueryHandler
-        : IRequestHandler<GetAllBrandsQuery, Result<IEnumerable<BrandResponse>>>
+        : IRequestHandler<GetAllBrandsQuery, PageResult<IEnumerable<BrandResponse>>>
     {
         private readonly IBrandService _brandService;
 
@@ -15,7 +15,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Brands.Queries.GetAll
             _brandService = brandService;
         }
 
-        public async Task<Result<IEnumerable<BrandResponse>>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
+        public async Task<PageResult<IEnumerable<BrandResponse>>> Handle(GetAllBrandsQuery request, CancellationToken cancellationToken)
         {
             var specification = new GetAllBrandsSpecification(request);
             var response = await _brandService.GetAllAsync(specification, cancellationToken);

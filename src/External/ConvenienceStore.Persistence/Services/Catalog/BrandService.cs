@@ -29,20 +29,22 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<BrandResponse>>> GetAllAsync(
+        public async Task<PageResult<IEnumerable<BrandResponse>>> GetAllAsync(
             GetAllBrandsSpecification specification,
             CancellationToken cancellationToken)
         {
+            var totalItems = await _brandRepository.CountAsync(specification, cancellationToken);
+
             var brands = await _brandRepository.ToListAsync(specification, cancellationToken);
             if (!brands.Any())
             {
-                return Result<IEnumerable<BrandResponse>>
+                return PageResult<IEnumerable<BrandResponse>>
                     .Fail(Error<Brand>.EmptyList);
             }
 
             var response = _mapper.Map<IEnumerable<BrandResponse>>(brands);
-            return Result<IEnumerable<BrandResponse>>
-                .Succeed(response, Success<Brand>.Retrieved);
+            return PageResult<IEnumerable<BrandResponse>>
+                .Succeed(response, Success<Brand>.Retrieved, totalItems, specification.Skip, specification.Take);
         }
 
         public async Task<Result<BrandResponse>> GetByIdAsync(GetBrandByIdSpecification specification, CancellationToken cancellationToken)

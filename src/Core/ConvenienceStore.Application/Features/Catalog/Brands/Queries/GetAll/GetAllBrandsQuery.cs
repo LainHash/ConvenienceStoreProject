@@ -1,3 +1,4 @@
+using ConvenienceStore.Application.Models;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Catalog;
 using MediatR;
@@ -5,7 +6,7 @@ using MediatR;
 namespace ConvenienceStore.Application.Features.Catalog.Brands.Queries.GetAll
 {
     public record GetAllBrandsQuery
-        : IRequest<Result<IEnumerable<BrandResponse>>>
+        : PageQuery, IRequest<PageResult<IEnumerable<BrandResponse>>>
     {
     }
 }
