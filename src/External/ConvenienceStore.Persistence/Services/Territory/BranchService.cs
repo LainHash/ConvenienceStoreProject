@@ -136,7 +136,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Branch>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Branch>.Restored, HttpStatusCode.Accepted);
         }
     }
 }

@@ -143,7 +143,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Brand>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Brand>.Restored, HttpStatusCode.Accepted);
         }
     }
 }
