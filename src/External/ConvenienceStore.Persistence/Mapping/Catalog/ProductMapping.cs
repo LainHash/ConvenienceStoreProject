@@ -2,6 +2,7 @@
 using ConvenienceStore.Contract.DTOs.Catalog.Products;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Persistence.DataRecords.Catalog;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace ConvenienceStore.Persistence.Mapping.Catalog
 {
@@ -18,6 +19,13 @@ namespace ConvenienceStore.Persistence.Mapping.Catalog
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.ProductStock.UnitPrice))
                 .ForMember(dest => dest.Unit, opt => opt.MapFrom(src => src.ProductStock.Unit))
                 .ForMember(dest => dest.QuantityOnHand, opt => opt.MapFrom(src => src.ProductStock.QuantityOnHand));
+
+            CreateMap<CreateProductRequest, Product>()
+                .ForMember(dest => dest.ProductStock.UnitPrice, opt => opt.MapFrom(src => src.UnitPrice))
+                .ForMember(dest => dest.ProductStock.Unit, opt => opt.MapFrom(src => src.Unit))
+                .ForMember(dest => dest.ProductStock.QuantityOnHand, opt => opt.MapFrom(src => src.QuantityOnHand))
+                .ForMember(dest => dest.CategoryId, opt => opt.Ignore())
+                .ForMember(dest => dest.BrandId, opt => opt.Ignore());
         }
     }
 }

@@ -51,7 +51,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<CategoryResponse>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<CategoryResponse>(category);
@@ -85,7 +85,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<CategoryResponse>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             _mapper.Map(specification.Body, category);
@@ -104,7 +104,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<object>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (category.IsDeleted)
@@ -128,7 +128,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<object>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (!category.IsDeleted)

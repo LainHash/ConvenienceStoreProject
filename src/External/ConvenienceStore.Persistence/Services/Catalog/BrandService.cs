@@ -51,7 +51,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<BrandResponse>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<BrandResponse>(brand);
@@ -85,7 +85,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<BrandResponse>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             _mapper.Map(specification.Body, brand);
@@ -104,7 +104,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<object>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (brand.IsDeleted)
@@ -128,7 +128,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<object>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (!brand.IsDeleted)
