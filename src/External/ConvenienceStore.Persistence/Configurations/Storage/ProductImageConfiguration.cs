@@ -8,6 +8,8 @@ namespace ConvenienceStore.Persistence.Configurations.Storage
     {
         public void Configure(EntityTypeBuilder<ProductImage> builder)
         {
+            builder.ToTable("ProductImages");
+
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
