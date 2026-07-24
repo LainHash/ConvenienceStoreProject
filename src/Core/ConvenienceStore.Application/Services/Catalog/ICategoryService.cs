@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
+using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
 using ConvenienceStore.Application.Models.Results;
@@ -9,7 +9,7 @@ namespace ConvenienceStore.Application.Services.Catalog
 {
     public interface ICategoryService
     {
-        Task<Result<IEnumerable<CategoryResponse>>> GetAllAsync(
+        Task<PageResult<IEnumerable<CategoryResponse>>> GetAllAsync(
             GetAllCategoriesSpecification specification,
             CancellationToken cancellationToken);
 

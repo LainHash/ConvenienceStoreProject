@@ -1,5 +1,7 @@
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Domain.Entities.Storage;
 using ConvenienceStore.Domain.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById
 {
@@ -13,6 +15,8 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById
             AddInclude(x => x.ProductStock);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
+            AddIncludeAggregator(x => x.Include(p => p.ProductImages)
+                                        .ThenInclude((ProductImage pi) => pi.Image));
 
             EnableSoftDeleteFilter();
         }

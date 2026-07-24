@@ -54,5 +54,13 @@ namespace ConvenienceStore.Persistence.Repositories
         {
             Entity.Remove(entity);
         }
+
+        public async Task<int> CountAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+        {
+            var query = SpecificationEvaluator
+                .GetQuery(Entity.AsQueryable(), specification, applyPaging: false);
+
+            return await query.CountAsync(cancellationToken);
+        }
     }
 }

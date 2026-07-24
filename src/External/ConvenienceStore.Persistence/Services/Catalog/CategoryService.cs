@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ConvenienceStore.Application.Features.Catalog.Categories.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetById;
@@ -29,20 +29,22 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<CategoryResponse>>> GetAllAsync(
+        public async Task<PageResult<IEnumerable<CategoryResponse>>> GetAllAsync(
             GetAllCategoriesSpecification specification,
             CancellationToken cancellationToken)
         {
+            var totalItems = await _categoryRepository.CountAsync(specification, cancellationToken);
+
             var categories = await _categoryRepository.ToListAsync(specification, cancellationToken);
             if (!categories.Any())
             {
-                return Result<IEnumerable<CategoryResponse>>
+                return PageResult<IEnumerable<CategoryResponse>>
                     .Fail(Error<Category>.EmptyList);
             }
 
             var response = _mapper.Map<IEnumerable<CategoryResponse>>(categories);
-            return Result<IEnumerable<CategoryResponse>>
-                .Succeed(response, Success<Category>.Retrieved);
+            return PageResult<IEnumerable<CategoryResponse>>
+                .Succeed(response, Success<Category>.Retrieved, totalItems, specification.Skip, specification.Take);
         }
 
         public async Task<Result<CategoryResponse>> GetByIdAsync(GetCategoryByIdSpecification specification, CancellationToken cancellationToken)
@@ -51,7 +53,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<CategoryResponse>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<CategoryResponse>(category);
@@ -85,7 +87,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<CategoryResponse>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             _mapper.Map(specification.Body, category);
@@ -104,7 +106,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<object>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (category.IsDeleted)
@@ -128,7 +130,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (category is null)
             {
                 return Result<object>
-                    .Fail(Error<Category>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (!category.IsDeleted)
@@ -143,7 +145,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Category>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Category>.Restored, HttpStatusCode.Accepted);
         }
     }
 }

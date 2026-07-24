@@ -1,11 +1,12 @@
-﻿using ConvenienceStore.Application.Models.Results;
+using ConvenienceStore.Application.Models;
+using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Catalog.Categories;
 using MediatR;
 
 namespace ConvenienceStore.Application.Features.Catalog.Categories.Queries.GetAll
 {
     public record GetAllCategoriesQuery
-        : IRequest<Result<IEnumerable<CategoryResponse>>>
+        : PageQuery, IRequest<PageResult<IEnumerable<CategoryResponse>>>
     {
     }
 }

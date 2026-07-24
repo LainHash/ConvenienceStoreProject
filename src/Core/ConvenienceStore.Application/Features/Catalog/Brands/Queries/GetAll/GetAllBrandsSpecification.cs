@@ -1,5 +1,7 @@
+using ConvenienceStore.Application.Enums;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Specifications;
+using Microsoft.EntityFrameworkCore;
 
 namespace ConvenienceStore.Application.Features.Catalog.Brands.Queries.GetAll
 {
@@ -9,6 +11,31 @@ namespace ConvenienceStore.Application.Features.Catalog.Brands.Queries.GetAll
         public GetAllBrandsSpecification(GetAllBrandsQuery query)
         {
             EnableSoftDeleteFilter();
+
+            if (!string.IsNullOrWhiteSpace(query.Keyword))
+            {
+                Criteria = p =>
+                    EF.Functions.Like(p.Name, $"%{query.Keyword}%") ||
+                    EF.Functions.Like(p.Description, $"%{query.Keyword}%");
+            }
+
+            switch (query.SortField)
+            {
+                case SortField.CreatedAt:
+                    if (query.Direction == SortDirection.Asc)
+                        ApplyOrderBy(p => p.CreatedAt);
+                    else
+                        ApplyOrderByDescending(p => p.CreatedAt);
+                    break;
+                case SortField.Name:
+                    if (query.Direction == SortDirection.Asc)
+                        ApplyOrderBy(p => p.Name);
+                    else
+                        ApplyOrderByDescending(p => p.Name);
+                    break;
+            }
+
+            ApplyPaging((query.Page - 1) * query.PageSize, query.PageSize);
         }
     }
 }

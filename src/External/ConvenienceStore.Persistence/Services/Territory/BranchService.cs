@@ -51,7 +51,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             if (branch is null)
             {
                 return Result<BranchResponse>
-                    .Fail(Error<Branch>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Branch>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<BranchResponse>(branch);
@@ -78,7 +78,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             if (branch is null)
             {
                 return Result<BranchResponse>
-                    .Fail(Error<Branch>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Branch>.NotFound, HttpStatusCode.NotFound);
             }
 
             _mapper.Map(specification.Body, branch);
@@ -97,7 +97,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             if (branch is null)
             {
                 return Result<object>
-                    .Fail(Error<Branch>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Branch>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (branch.IsDeleted)
@@ -121,7 +121,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             if (branch is null)
             {
                 return Result<object>
-                    .Fail(Error<Branch>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Branch>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (!branch.IsDeleted)
@@ -136,7 +136,7 @@ namespace ConvenienceStore.Persistence.Services.Territory
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Branch>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Branch>.Restored, HttpStatusCode.Accepted);
         }
     }
 }

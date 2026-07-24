@@ -16,7 +16,7 @@ namespace ConvenienceStore.Persistence.Repositories.Catalog
         public async Task<Category?> FindNameAsync(string name, CancellationToken cancellationToken = default)
         {
             return await _context.Categories
-                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+                .FirstOrDefaultAsync(x => string.Equals(x.Name, name), cancellationToken);
         }
 
         public async Task<Category?> FindAsync(string id, CancellationToken cancellationToken = default)

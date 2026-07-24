@@ -8,7 +8,7 @@ namespace ConvenienceStore.Application.Services.Catalog
 {
     public interface IBrandService
     {
-        Task<Result<IEnumerable<BrandResponse>>> GetAllAsync(GetAllBrandsSpecification specification, CancellationToken cancellationToken);
+        Task<PageResult<IEnumerable<BrandResponse>>> GetAllAsync(GetAllBrandsSpecification specification, CancellationToken cancellationToken);
         Task<Result<BrandResponse>> GetByIdAsync(GetBrandByIdSpecification specification, CancellationToken cancellationToken);
         Task<Result<BrandResponse>> CreateAsync(CreateBrandRequest request, CancellationToken cancellationToken);
         Task<Result<BrandResponse>> UpdateAsync(UpdateBrandSpecification specification, CancellationToken cancellationToken);

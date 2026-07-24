@@ -5,18 +5,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConvenienceStore.Persistence.Repositories.Catalog
 {
-    internal class BrandRepository : Repository<Brand>, IBrandRepository
+    internal class BrandRepository(ConvenienceStoreDbContext context) : Repository<Brand>(context), IBrandRepository
     {
-        private readonly ConvenienceStoreDbContext _context;
-        public BrandRepository(ConvenienceStoreDbContext context) : base(context)
-        {
-            _context = context;
-        }
+        private readonly ConvenienceStoreDbContext _context = context;
 
         public async Task<Brand?> FindNameAsync(string name, CancellationToken cancellationToken = default)
         {
             return await _context.Set<Brand>()
-                .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.OrdinalIgnoreCase), cancellationToken);
+                .FirstOrDefaultAsync(x => string.Equals(x.Name, name), cancellationToken);
         }
 
         public async Task<Brand?> FindAsync(string id, CancellationToken cancellationToken = default)

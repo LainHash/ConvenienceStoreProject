@@ -16,7 +16,8 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Restor
 
         public async Task<Result<object>> Handle(RestoreProductCommand request, CancellationToken cancellationToken)
         {
-            var response = await _productService.RestoreAsync(request.Id, cancellationToken);
+            var specification = new RestoreProductSpecification(request);
+            var response = await _productService.RestoreAsync(specification, cancellationToken);
             return response;
         }
     }

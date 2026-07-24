@@ -29,20 +29,22 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result<IEnumerable<BrandResponse>>> GetAllAsync(
+        public async Task<PageResult<IEnumerable<BrandResponse>>> GetAllAsync(
             GetAllBrandsSpecification specification,
             CancellationToken cancellationToken)
         {
+            var totalItems = await _brandRepository.CountAsync(specification, cancellationToken);
+
             var brands = await _brandRepository.ToListAsync(specification, cancellationToken);
             if (!brands.Any())
             {
-                return Result<IEnumerable<BrandResponse>>
+                return PageResult<IEnumerable<BrandResponse>>
                     .Fail(Error<Brand>.EmptyList);
             }
 
             var response = _mapper.Map<IEnumerable<BrandResponse>>(brands);
-            return Result<IEnumerable<BrandResponse>>
-                .Succeed(response, Success<Brand>.Retrieved);
+            return PageResult<IEnumerable<BrandResponse>>
+                .Succeed(response, Success<Brand>.Retrieved, totalItems, specification.Skip, specification.Take);
         }
 
         public async Task<Result<BrandResponse>> GetByIdAsync(GetBrandByIdSpecification specification, CancellationToken cancellationToken)
@@ -51,7 +53,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<BrandResponse>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<BrandResponse>(brand);
@@ -85,7 +87,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<BrandResponse>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             _mapper.Map(specification.Body, brand);
@@ -104,7 +106,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<object>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (brand.IsDeleted)
@@ -128,7 +130,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             if (brand is null)
             {
                 return Result<object>
-                    .Fail(Error<Brand>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
             }
 
             if (!brand.IsDeleted)
@@ -143,7 +145,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Brand>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Brand>.Restored, HttpStatusCode.Accepted);
         }
     }
 }

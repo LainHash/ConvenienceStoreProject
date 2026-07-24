@@ -14,7 +14,7 @@ namespace ConvenienceStore.Persistence.Configurations.Inventory
             builder.HasKey(x => x.Id);
 
             builder.Property(x => x.Id)
-                .UseIdentityColumn();
+                .UseIdentityByDefaultColumn();
 
             builder.Property(x => x.PublicId)
                 .IsRequired();

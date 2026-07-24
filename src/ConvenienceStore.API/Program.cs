@@ -1,7 +1,8 @@
-using ConvenienceStore.Persistence;
 using ConvenienceStore.Application;
+using ConvenienceStore.Persistence;
 using DotNetEnv;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 Env.Load();
 
@@ -55,6 +56,12 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddHttpClient();
+
+builder.Services.ConfigureHttpJsonOptions(options =>
+{
+    options.SerializerOptions.Converters.Add(
+        new JsonStringEnumConverter());
+});
 
 var app = builder.Build();
 

@@ -5,15 +5,10 @@ using MediatR;
 
 namespace ConvenienceStore.Application.Features.Catalog.Brands.Commands.Create
 {
-    internal class CreateBrandCommandHandler
-        : IRequestHandler<CreateBrandCommand, Result<BrandResponse>>
+    internal class CreateBrandCommandHandler(IBrandService brandService)
+                : IRequestHandler<CreateBrandCommand, Result<BrandResponse>>
     {
-        private readonly IBrandService _brandService;
-
-        public CreateBrandCommandHandler(IBrandService brandService)
-        {
-            _brandService = brandService;
-        }
+        private readonly IBrandService _brandService = brandService;
 
         public async Task<Result<BrandResponse>> Handle(CreateBrandCommand request, CancellationToken cancellationToken)
         {

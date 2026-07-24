@@ -1,4 +1,8 @@
 using AutoMapper;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Create;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
+using ConvenienceStore.Application.Features.Catalog.Products.Commands.Update;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll;
 using ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
@@ -15,42 +19,52 @@ namespace ConvenienceStore.Persistence.Services.Catalog
     internal class ProductService : IProductService
     {
         private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
+        private readonly IBrandRepository _brandRepository;
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
 
         public ProductService(
             IMapper mapper,
             IProductRepository productRepository,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            ICategoryRepository categoryRepository,
+            IBrandRepository brandRepository)
         {
             _mapper = mapper;
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
+            _categoryRepository = categoryRepository;
+            _brandRepository = brandRepository;
         }
 
-        public async Task<Result<IEnumerable<ProductResponse>>> GetAllAsync(
+        public async Task<PageResult<IEnumerable<ProductResponse>>> GetAllAsync(
             GetAllProductSpecification specification,
             CancellationToken cancellationToken)
         {
+            var totalItems = await _productRepository.CountAsync(specification, cancellationToken);
+
             var products = await _productRepository.ToListAsync(specification, cancellationToken);
             if (!products.Any())
             {
-                return Result<IEnumerable<ProductResponse>>
+                return PageResult<IEnumerable<ProductResponse>>
                     .Fail(Error<Product>.EmptyList);
             }
 
             var response = _mapper.Map<IEnumerable<ProductResponse>>(products);
-            return Result<IEnumerable<ProductResponse>>
-                .Succeed(response, Success<Product>.Retrieved);
+            return PageResult<IEnumerable<ProductResponse>>
+                .Succeed(response,Success<Product>.Retrieved, totalItems, specification.Skip, specification.Take);
         }
 
-        public async Task<Result<ProductResponse>> GetByIdAsync(GetProductByIdSpecification specification, CancellationToken cancellationToken)
+        public async Task<Result<ProductResponse>> GetByIdAsync(
+            GetProductByIdSpecification specification,
+            CancellationToken cancellationToken)
         {
             var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
             {
                 return Result<ProductResponse>
-                    .Fail(Error<Product>.NotFound, HttpStatusCode.InternalServerError);
+                    .Fail(Error<Product>.NotFound, HttpStatusCode.NotFound);
             }
 
             var response = _mapper.Map<ProductResponse>(product);
@@ -58,9 +72,76 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(response, Success<Product>.Retrieved);
         }
 
-        public async Task<Result<object>> DeleteAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<ProductResponse>> CreateAsync(
+            CreateProductSpecification specification,
+            CancellationToken cancellationToken)
         {
-            var product = await _productRepository.FindAsync(id, cancellationToken);
+            var category = await _categoryRepository.FindAsync(specification.Body.CategoryId, cancellationToken);
+            if (category is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var brand = await _brandRepository.FindAsync(specification.Body.BrandId, cancellationToken);
+            if (brand is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var product = Product.Create(category.Id, brand.Id);
+            _mapper.Map(specification.Body, product);
+            _productRepository.Add(product);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            specification.ApplyCriteria(product.Id);
+            var createdProduct = await _productRepository.FindAsync(specification, cancellationToken);
+
+            var response = _mapper.Map<ProductResponse>(createdProduct);
+            return Result<ProductResponse>
+                .Succeed(response, Success<Product>.Created, HttpStatusCode.Created);
+        }
+
+        public async Task<Result<ProductResponse>> UpdateAsync(
+            UpdateProductSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var category = await _categoryRepository.FindAsync(specification.Body.CategoryId, cancellationToken);
+            if (category is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Category>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var brand = await _brandRepository.FindAsync(specification.Body.BrandId, cancellationToken);
+            if (brand is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Brand>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
+            if (product is null)
+            {
+                return Result<ProductResponse>
+                    .Fail(Error<Product>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            product.Update(category.Id, brand.Id);
+            _mapper.Map(specification.Body, product);
+
+            var response = _mapper.Map<ProductResponse>(product);
+            return Result<ProductResponse>
+                .Succeed(response, Success<Product>.Updated, HttpStatusCode.Accepted);
+        }
+
+        public async Task<Result<object>> DeleteAsync(
+            DeleteProductSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
             {
                 return Result<object>
@@ -74,6 +155,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.SoftDelete();
+            product.ProductStock.SoftDelete();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -82,9 +164,11 @@ namespace ConvenienceStore.Persistence.Services.Catalog
                 .Succeed(default, Success<Product>.Deleted, HttpStatusCode.Accepted);
         }
 
-        public async Task<Result<object>> RestoreAsync(string id, CancellationToken cancellationToken)
+        public async Task<Result<object>> RestoreAsync(
+            RestoreProductSpecification specification,
+            CancellationToken cancellationToken)
         {
-            var product = await _productRepository.FindAsync(id, cancellationToken);
+            var product = await _productRepository.FindAsync(specification, cancellationToken);
             if (product is null)
             {
                 return Result<object>
@@ -98,12 +182,13 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.Restore();
+            product.ProductStock.Restore();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return Result<object>
-                .Succeed(default, Success<Product>.Deleted, HttpStatusCode.Accepted);
+                .Succeed(default, Success<Product>.Restored, HttpStatusCode.Accepted);
         }
     }
 }
