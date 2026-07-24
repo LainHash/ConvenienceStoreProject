@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
 
 namespace ConvenienceStore.Domain.Entities.Storage
@@ -13,5 +13,25 @@ namespace ConvenienceStore.Domain.Entities.Storage
 
         public Product Product { get; private set; } = null!;
         public Image Image { get; private set; } = null!;
+
+        public static ProductImage Create(
+            int productId,
+            int imageId,
+            bool isPrimary,
+            int displayOrder)
+        {
+            return new ProductImage
+            {
+                ProductId = productId,
+                ImageId = imageId,
+                IsPrimary = isPrimary,
+                DisplayOrder = displayOrder
+            };
+        }
+
+        public void RemovePrimary()
+        {
+            IsPrimary = false;
+        }
     }
 }
