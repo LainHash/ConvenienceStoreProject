@@ -12,6 +12,6 @@ namespace ConvenienceStore.Domain.Entities.Storage
         public decimal FileSize { get; private set; }
         public string ContentType { get; private set; } = null!;
 
-        public ICollection<ProductImage> ProductImages { get; private set; } = [];
+        public ProductImage ProductImage { get; private set; } = null!;
     }
 }

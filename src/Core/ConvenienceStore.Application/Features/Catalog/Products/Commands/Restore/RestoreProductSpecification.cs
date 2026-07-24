@@ -9,8 +9,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Restor
         public RestoreProductSpecification(RestoreProductCommand command)
         {
             Criteria = p => string.Equals(p.PublicId, command.Id);
-
-            AddInclude(x => x.ProductStock);
         }
     }
 }

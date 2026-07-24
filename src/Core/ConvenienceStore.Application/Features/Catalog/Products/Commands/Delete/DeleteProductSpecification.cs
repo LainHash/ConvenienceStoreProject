@@ -9,8 +9,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete
         public DeleteProductSpecification(DeleteProductCommand command)
         {
             Criteria = p => string.Equals(p.PublicId, command.Id);
-
-            AddInclude(x => x.ProductStock);
         }
     }
 }

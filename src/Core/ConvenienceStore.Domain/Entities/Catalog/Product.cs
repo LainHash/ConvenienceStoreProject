@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Inventory;
+using ConvenienceStore.Domain.Entities.Storage;
 
 namespace ConvenienceStore.Domain.Entities.Catalog
 {
@@ -9,11 +10,13 @@ namespace ConvenienceStore.Domain.Entities.Catalog
         public string? Description { get; private set; }
 
         public int CategoryId { get; private set; }
-        public int? BrandId { get; private set; }
+        public int BrandId { get; private set; }
 
         public Category Category { get; private set; } = null!;
-        public Brand? Brand { get; private set; } = null!;
+        public Brand Brand { get; private set; } = null!;
         public ProductStock ProductStock { get; private set; } = null!;
+
+        public ICollection<ProductImage> ProductImages { get; private set; } = [];
     }
 
     public partial class Product

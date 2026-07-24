@@ -1,4 +1,6 @@
-﻿namespace ConvenienceStore.Contract.DTOs.Catalog.Products
+using ConvenienceStore.Contract.DTOs.Storage.Images;
+
+namespace ConvenienceStore.Contract.DTOs.Catalog.Products
 {
     public class ProductResponse
     {
@@ -12,5 +14,8 @@
         public decimal UnitPrice { get; set; }
         public string Unit { get; set; } = string.Empty;
         public int QuantityOnHand { get; set; }
+
+        public IEnumerable<ImageResponse> Images { get; set; } = [];
+        public ImageResponse? PrimaryImage { get; set; }
     }
 }

@@ -16,9 +16,14 @@ namespace ConvenienceStore.Persistence.Configurations.Storage
                 .UseIdentityByDefaultColumn();
 
             builder.HasOne(x => x.Image)
-                   .WithMany(x => x.ProductImages)
-                   .HasForeignKey(x => x.ImageId)
-                   .OnDelete(DeleteBehavior.Cascade);
+                .WithOne(x => x.ProductImage)
+                .HasForeignKey<ProductImage>(x => x.ImageId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Product)
+                .WithMany(x => x.ProductImages)
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasIndex(x => x.ProductId)
                     .IsUnique()
