@@ -1,4 +1,6 @@
-﻿using ConvenienceStore.Contract.Settings.Storage;
+﻿using ConvenienceStore.Application.Services.Storage;
+using ConvenienceStore.Contract.Settings.Storage;
+using ConvenienceStore.Infrastructure.Services.Storage;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

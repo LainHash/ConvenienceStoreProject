@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Abstraction;
 
 namespace ConvenienceStore.Domain.Entities.Storage
 {
@@ -13,5 +13,22 @@ namespace ConvenienceStore.Domain.Entities.Storage
         public string ContentType { get; private set; } = null!;
 
         public ProductImage ProductImage { get; private set; } = null!;
+
+        public static Image Create(
+            string altText,
+            string url,
+            string storagePath,
+            long fileSize,
+            string contentType)
+        {
+            return new Image
+            {
+                AltText = altText,
+                Url = url,
+                StoragePath = storagePath,
+                FileSize = fileSize,
+                ContentType = contentType
+            };
+        }
     }
 }

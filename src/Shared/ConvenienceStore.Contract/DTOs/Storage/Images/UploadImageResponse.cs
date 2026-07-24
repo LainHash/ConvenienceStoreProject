@@ -1,10 +1,9 @@
-﻿using ConvenienceStore.Domain.Entities.Storage;
 
 namespace ConvenienceStore.Contract.DTOs.Storage.Images
 {
     public class UploadImageResponse
     {
-        public Guid ImageId { get; set; }
+        public string ImageId { get; set; } = string.Empty;
         public string Url { get; set; } = string.Empty;
         public string PublicId { get; set; } = string.Empty;
         public string AltText { get; set; } = string.Empty;
