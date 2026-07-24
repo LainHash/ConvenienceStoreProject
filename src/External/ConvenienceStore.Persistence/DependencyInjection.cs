@@ -12,6 +12,8 @@ using ConvenienceStore.Persistence.Services.Territory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using ConvenienceStore.Application.Services.Storage;
+using ConvenienceStore.Persistence.Services.Storage;
 
 namespace ConvenienceStore.Persistence
 {
@@ -75,6 +77,8 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IProductService, ProductService>();
 
             services.AddScoped<IBranchService, BranchService>();
+
+            services.AddScoped<IImageService, ImageService>();
 
             return services;
         }

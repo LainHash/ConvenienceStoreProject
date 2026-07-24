@@ -37,26 +37,43 @@ namespace ConvenienceStore.Persistence.Seeders
             var seeder = scope.ServiceProvider.GetRequiredService<TSeeder>();
             await seeder.SeedAsync(context);
         }
-
+        
         private async Task SyncPostgresSequencesAsync()
         {
-            var tables = new[] { "Categories", "Brands", "Products", "ProductStocks", "Branches" };
-            foreach (var table in tables)
+            var tablesWithId = _context.Model
+                .GetEntityTypes()
+                .Select(e => e.GetTableName())
+                .Where(t => t is not null)
+                .Distinct()
+                .ToList();
+
+            foreach (var tableName in tablesWithId)
             {
-                var sql = $@"
-                    DO $$ 
-                    BEGIN 
-                        IF EXISTS (SELECT FROM pg_tables WHERE tablename  = '{table.ToLower()}') OR EXISTS (SELECT FROM pg_tables WHERE tablename  = '{table}') THEN 
-                            PERFORM setval(pg_get_serial_sequence('""{table}""', 'Id'), coalesce(max(""Id""), 0) + 1, false) FROM ""{table}""; 
-                        END IF; 
-                    END $$;";
+                var sql = $"""
+                    DO $$
+                    BEGIN
+                        IF EXISTS (
+                            SELECT 1 FROM pg_class c
+                            JOIN pg_namespace n ON n.oid = c.relnamespace
+                            WHERE c.relkind = 'r'
+                              AND c.relname = '{tableName}'
+                        ) THEN
+                            PERFORM setval(
+                                pg_get_serial_sequence('"{tableName}"', 'Id'),
+                                COALESCE((SELECT MAX("Id") FROM "{tableName}"), 0) + 1,
+                                false
+                            );
+                        END IF;
+                    END $$;
+                    """;
+
                 try
                 {
                     await _context.Database.ExecuteSqlRawAsync(sql);
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Ignore if sequence doesn't exist
+                    Console.WriteLine($"[SyncSequence] Skipped \"{tableName}\": {ex.Message}");
                 }
             }
         }
