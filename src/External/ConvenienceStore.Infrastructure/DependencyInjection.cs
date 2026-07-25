@@ -1,8 +1,11 @@
 ﻿using ConvenienceStore.Application.Services.Authentication;
+using ConvenienceStore.Application.Services.Email;
 using ConvenienceStore.Application.Services.Storage;
 using ConvenienceStore.Contract.Settings.Authentication;
+using ConvenienceStore.Contract.Settings.Email;
 using ConvenienceStore.Contract.Settings.Storage;
 using ConvenienceStore.Infrastructure.Services.Authentication;
+using ConvenienceStore.Infrastructure.Services.Email;
 using ConvenienceStore.Infrastructure.Services.Storage;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
@@ -22,11 +25,11 @@ namespace ConvenienceStore.Infrastructure
 
             // ── Authentication & Security ────────────────────────────────────
             services.Configure<JwtSettings>(configuration.GetSection("JwtSettings"));
-            //services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
+            services.Configure<EmailSettings>(configuration.GetSection("EmailSettings"));
 
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
-            //services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IEmailService, EmailService>();
 
             var jwtSettings = configuration.GetSection("JwtSettings").Get<JwtSettings>();
             if (jwtSettings is not null)

@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Guest;
 
 namespace ConvenienceStore.Domain.Entities.Identity
 {
@@ -15,5 +16,6 @@ namespace ConvenienceStore.Domain.Entities.Identity
         public int RoleId { get; private set; }
 
         public Role Role { get; private set; } = null!;
+        public Customer Customer { get; private set; } = null!;
     }
 }
