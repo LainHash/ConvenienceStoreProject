@@ -1,5 +1,7 @@
-﻿using ConvenienceStore.Domain.Abstraction;
+﻿
+using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Entities.Storage;
 using ConvenienceStore.Domain.Entities.Territory;
@@ -24,6 +26,9 @@ namespace ConvenienceStore.Persistence.Context
         public DbSet<ProductImage> ProductImages { get; set; } = null!;
 
         public DbSet<Branch> Branches { get; set; } = null!;
+
+        public DbSet<Role> Roles { get; set; } = null!;
+        public DbSet<User> Users { get; set; } = null!;
 
         // ── Model building ──────────────────────────────────────────────────
         protected override void OnModelCreating(ModelBuilder modelBuilder)
