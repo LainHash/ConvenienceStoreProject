@@ -146,7 +146,6 @@ namespace ConvenienceStore.Persistence.Services.Authentication
         }
 
         public async Task<Result<object>> VerifyEmailAsync(
-            string userId,
             VerifyEmailRequest request,
             CancellationToken cancellationToken = default)
         {
@@ -183,11 +182,10 @@ namespace ConvenienceStore.Persistence.Services.Authentication
                 .Succeed(default, "Email verified successfully. You can now login.", HttpStatusCode.Accepted);
         }
         public async Task<Result<object>> CompleteProfileAsync(
-            string userId,
             CompleteProfileRequest request,
             CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.FindAsync(userId, cancellationToken);
+            var user = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
             if (user == null)
             {
                 return Result<object>

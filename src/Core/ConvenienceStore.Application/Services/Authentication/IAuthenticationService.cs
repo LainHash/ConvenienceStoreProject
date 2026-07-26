@@ -14,12 +14,10 @@ namespace ConvenienceStore.Application.Services.Authentication
             CancellationToken cancellationToken = default);
 
         Task<Result<object>> VerifyEmailAsync(
-            string userId,
             VerifyEmailRequest request,
             CancellationToken cancellationToken = default);
 
         Task<Result<object>> CompleteProfileAsync(
-            string userId,
             CompleteProfileRequest request,
             CancellationToken cancellationToken = default);
 
