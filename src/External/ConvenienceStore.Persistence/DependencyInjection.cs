@@ -14,6 +14,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using ConvenienceStore.Application.Services.Storage;
 using ConvenienceStore.Persistence.Services.Storage;
+using ConvenienceStore.Application.Services.Authentication;
+using ConvenienceStore.Application.Services.Identity;
+using ConvenienceStore.Persistence.Services.Authentication;
+using ConvenienceStore.Persistence.Services.Identity;
 
 namespace ConvenienceStore.Persistence
 {
@@ -69,6 +73,7 @@ namespace ConvenienceStore.Persistence
             }
 
             // ── Services ─────────────────────────────────────────────────────
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IDataImporter, ExcelImporter>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -79,6 +84,8 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IBranchService, BranchService>();
 
             services.AddScoped<IImageService, ImageService>();
+
+            services.AddScoped<IRoleService, RoleService>();
 
             return services;
         }
