@@ -56,8 +56,8 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             LoginRequest request,
             CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.FindAsync(request.Email, cancellationToken);
-            if (user == null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
+            var user = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
+            if (user is null || !_passwordHasher.VerifyPassword(request.Password, user.PasswordHash))
             {
                 return Result<AuthenticationResponse>
                     .Fail("Incorrect email or password.", HttpStatusCode.Unauthorized);
@@ -94,14 +94,14 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             try
             {
                 var existingUser = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
-                if (existingUser != null)
+                if (existingUser is not null)
                 {
                     return Result<object>
                         .Fail("This email already used. Please use another email.", HttpStatusCode.Conflict);
                 }
 
                 var customerRole = await _roleRepository.FindByNameAsync("Customer", cancellationToken);
-                if (customerRole == null)
+                if (customerRole is null)
                 {
                     return Result<object>
                         .Fail(Error<Role>.NotFound, HttpStatusCode.InternalServerError);
@@ -121,6 +121,8 @@ namespace ConvenienceStore.Persistence.Services.Authentication
                 _customerRepository.Add(customer);
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                await transaction.CommitAsync(cancellationToken);
 
                 try
                 {
@@ -149,8 +151,8 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             VerifyEmailRequest request,
             CancellationToken cancellationToken = default)
         {
-            var user = await _userRepository.FindAsync(request.Email, cancellationToken);
-            if (user == null)
+            var user = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
+            if (user is null)
             {
                 return Result<object>
                     .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
@@ -186,7 +188,7 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             CancellationToken cancellationToken = default)
         {
             var user = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
-            if (user == null)
+            if (user is null)
             {
                 return Result<object>
                     .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
@@ -199,7 +201,7 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             }
 
             var customer = await _customerRepository.FindByUserAsync(user.Id, cancellationToken);
-            if (customer == null)
+            if (customer is null)
             {
                 return Result<object>
                     .Fail(Error<Customer>.NotFound, HttpStatusCode.NotFound);
