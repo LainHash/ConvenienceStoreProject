@@ -18,5 +18,10 @@ namespace ConvenienceStore.Domain.Entities.Guest
         {
             UserId = userId;
         }
+
+        public void CompleteProfile(int profileId)
+        {
+            ProfileId = profileId;
+        }
     }
 }

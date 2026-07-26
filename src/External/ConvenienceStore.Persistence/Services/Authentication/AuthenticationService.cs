@@ -9,6 +9,7 @@ using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Repositories.Guest;
 using ConvenienceStore.Domain.Repositories.Identity;
+using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.Authentication
@@ -25,6 +26,7 @@ namespace ConvenienceStore.Persistence.Services.Authentication
         private readonly IUnitOfWork _unitOfWork;
         private readonly IJwtProvider _jwtProvider;
         private readonly IMapper _mapper;
+        private readonly ILogger<AuthenticationService> _logger;
 
         public AuthenticationService(
             IUserRepository userRepository,
@@ -35,7 +37,8 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             IEmailService emailService,
             IUnitOfWork unitOfWork,
             IJwtProvider jwtProvider,
-            IMapper mapper)
+            IMapper mapper,
+            ILogger<AuthenticationService> logger)
         {
             _userRepository = userRepository;
             _roleRepository = roleRepository;
@@ -46,6 +49,7 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             _unitOfWork = unitOfWork;
             _jwtProvider = jwtProvider;
             _mapper = mapper;
+            _logger = logger;
         }
 
         public async Task<Result<AuthenticationResponse>> LoginAsync(
@@ -86,40 +90,59 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             RegisterRequest request,
             CancellationToken cancellationToken = default)
         {
-            var existingUser = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
-            if (existingUser != null)
+            await using var transaction = await _unitOfWork.BeginTransactionAsync(cancellationToken);
+            try
             {
-                return Result<object>
-                    .Fail("This email already used. Please use another email.", HttpStatusCode.Conflict);
-            }
+                var existingUser = await _userRepository.FindByEmailAsync(request.Email, cancellationToken);
+                if (existingUser != null)
+                {
+                    return Result<object>
+                        .Fail("This email already used. Please use another email.", HttpStatusCode.Conflict);
+                }
 
-            var customerRole = await _roleRepository.FindByNameAsync("Customer", cancellationToken);
-            if (customerRole == null)
+                var customerRole = await _roleRepository.FindByNameAsync("Customer", cancellationToken);
+                if (customerRole == null)
+                {
+                    return Result<object>
+                        .Fail(Error<Role>.NotFound, HttpStatusCode.InternalServerError);
+                }
+
+                var verificationCode = GenerateCode();
+
+                var user = _mapper.Map<User>(request);
+                user.SetPasswordHash(_passwordHasher.HashPassword(request.Password));
+                user.SetRole(customerRole.Id);
+                user.SetVerificationCode(verificationCode);
+                _userRepository.Add(user);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                var customer = new Customer(user.Id);
+                _customerRepository.Add(customer);
+
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+                try
+                {
+                    var message = new EmailMessage(user.UserName, verificationCode);
+                    await _emailService.SendEmailAsync(user.Email, message, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Send verification email failed.");
+                }
+
+                return Result<object>
+                     .Succeed(default, "Register successfully. Please check your account to get verification code.", HttpStatusCode.Created);
+            }
+            catch (Exception ex)
             {
+                await transaction.RollbackAsync(cancellationToken);
+
+                _logger.LogError(ex, "Register request failed. Email: {Email}", request.Email);
                 return Result<object>
-                    .Fail(Error<Role>.NotFound, HttpStatusCode.NotFound);
+                    .Fail("Register request failed.", HttpStatusCode.InternalServerError);
             }
-
-            var verificationCode = GenerateCode();
-
-            var user = _mapper.Map<User>(request);
-            user.SetPasswordHash(_passwordHasher.HashPassword(request.Password));
-            user.SetRole(customerRole.Id);
-            user.SetVerificationCode(verificationCode);
-            _userRepository.Add(user);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            var customer = new Customer(user.Id);
-            _customerRepository.Add(customer);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            var message = new EmailMessage(user.UserName, verificationCode);
-            await _emailService.SendEmailAsync(user.Email, message, cancellationToken);
-
-            return Result<object>
-                 .Succeed(default, "Register successfully. Please check your account to get verification code.", HttpStatusCode.Created);
         }
 
         public async Task<Result<object>> VerifyEmailAsync(
@@ -127,14 +150,118 @@ namespace ConvenienceStore.Persistence.Services.Authentication
             VerifyEmailRequest request,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.FindAsync(request.Email, cancellationToken);
+            if (user == null)
+            {
+                return Result<object>
+                    .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            if (user.IsActive)
+            {
+                return Result<object>
+                    .Fail("Account is already active.", HttpStatusCode.Conflict);
+            }
+
+            if (user.VerificationCode != request.Code)
+            {
+                return Result<object>
+                    .Fail("Invalid verification code.", HttpStatusCode.Conflict);
+            }
+
+            if (user.VerificationCodeExpiresAt < DateTime.UtcNow)
+            {
+                return Result<object>
+                    .Fail("Verification code has expired. Please request a new one.", HttpStatusCode.RequestTimeout);
+            }
+
+            user.CompleteVerification();
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result<object>
+                .Succeed(default, "Email verified successfully. You can now login.", HttpStatusCode.Accepted);
         }
         public async Task<Result<object>> CompleteProfileAsync(
             string userId,
             CompleteProfileRequest request,
             CancellationToken cancellationToken = default)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.FindAsync(userId, cancellationToken);
+            if (user == null)
+            {
+                return Result<object>
+                    .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            if (!user.IsActive)
+            {
+                return Result<object>
+                    .Fail("Account is not active. Please verify your email first.", HttpStatusCode.PreconditionRequired);
+            }
+
+            var customer = await _customerRepository.FindByUserAsync(user.Id, cancellationToken);
+            if (customer == null)
+            {
+                return Result<object>
+                    .Fail(Error<Customer>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            if (customer.ProfileId.HasValue)
+            {
+                return Result<object>
+                    .Fail("Profile has already been completed.", HttpStatusCode.Conflict);
+            }
+
+            var profile = _mapper.Map<Domain.Entities.Identity.Profile>(request);
+            _profileRepository.Add(profile);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            customer.CompleteProfile(profile.Id);
+            _customerRepository.Update(customer);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result<object>
+                .Succeed(default, "Profile completed successfully.", HttpStatusCode.Accepted);
+        }
+
+        public async Task<Result<object>> ResendVerificationAsync(
+            ResendVerificationRequest request,
+            CancellationToken cancellationToken = default)
+        {
+            var user = await _userRepository.FindAsync(request.Email, cancellationToken);
+            if (user is null)
+            {
+                return Result<object>
+                    .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            if (user.IsActive)
+            {
+                return Result<object>
+                    .Fail("Account is already active.", HttpStatusCode.Conflict);
+            }
+
+            var newCode = GenerateCode();
+            user.SetVerificationCode(newCode);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            try
+            {
+                var message = new EmailMessage(user.UserName, newCode);
+                await _emailService.SendEmailAsync(user.Email, message, cancellationToken);
+
+                return Result<object>
+                .Succeed(default, "Verification email resent. Please check your inbox.", HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Resend verification email failed. Email: {Email}", user.Email);
+                throw;
+            }
         }
 
         private string GenerateCode()

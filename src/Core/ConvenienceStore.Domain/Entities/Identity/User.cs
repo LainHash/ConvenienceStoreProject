@@ -37,5 +37,12 @@ namespace ConvenienceStore.Domain.Entities.Identity
             VerificationCodeExpiresAt = DateTime.UtcNow.AddMinutes(15);
             IsActive = false;
         }
+
+        public void CompleteVerification()
+        {
+            VerificationCode = null;
+            VerificationCodeExpiresAt = null;
+            IsActive = true;
+        }
     }
 }
