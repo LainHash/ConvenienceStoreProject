@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Carts;
 using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Entities.Storage;
 
@@ -17,6 +18,7 @@ namespace ConvenienceStore.Domain.Entities.Catalog
         public ProductStock ProductStock { get; private set; } = null!;
 
         public ICollection<ProductImage> ProductImages { get; private set; } = [];
+        public ICollection<CartItem> CartItems { get; private set; } = [];
     }
 
     public partial class Product

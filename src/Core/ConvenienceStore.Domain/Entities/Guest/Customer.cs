@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Carts;
 using ConvenienceStore.Domain.Entities.Identity;
 
 namespace ConvenienceStore.Domain.Entities.Guest
@@ -10,10 +11,13 @@ namespace ConvenienceStore.Domain.Entities.Guest
 
         public User User { get; private set; } = null!;
         public Profile? Profile { get; private set; } = null!;
+        public Cart? Cart { get; private set; }
     }
 
     public partial class Customer
     {
+        public Customer() { }
+
         public Customer(int userId)
         {
             UserId = userId;
