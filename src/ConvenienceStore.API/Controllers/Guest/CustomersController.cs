@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,6 +16,16 @@ namespace ConvenienceStore.API.Controllers.Guest
             [FromQuery] GetAllCustomersQuery query,
             CancellationToken cancellationToken)
         {
+            var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(
+            [FromRoute] string id,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetCustomerByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
