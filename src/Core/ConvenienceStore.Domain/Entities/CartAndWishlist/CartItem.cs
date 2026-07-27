@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
 
-namespace ConvenienceStore.Domain.Entities.Carts
+namespace ConvenienceStore.Domain.Entities.CartAndWishlist
 {
     public class CartItem : AuditableEntity
     {

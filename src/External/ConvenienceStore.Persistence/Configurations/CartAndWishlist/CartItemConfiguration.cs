@@ -1,8 +1,8 @@
-﻿using ConvenienceStore.Domain.Entities.Carts;
+﻿using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ConvenienceStore.Persistence.Configurations.Carts
+namespace ConvenienceStore.Persistence.Configurations.CartAndWishlist
 {
     internal class CartItemConfiguration
         : IEntityTypeConfiguration<CartItem>
