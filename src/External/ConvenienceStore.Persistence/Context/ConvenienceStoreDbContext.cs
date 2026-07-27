@@ -1,6 +1,6 @@
 ﻿
 using ConvenienceStore.Domain.Abstraction;
-using ConvenienceStore.Domain.Entities.Carts;
+using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;

@@ -18,6 +18,8 @@ using ConvenienceStore.Application.Services.Authentication;
 using ConvenienceStore.Application.Services.Identity;
 using ConvenienceStore.Persistence.Services.Authentication;
 using ConvenienceStore.Persistence.Services.Identity;
+using ConvenienceStore.Application.Services.Guest;
+using ConvenienceStore.Persistence.Services.Guest;
 
 namespace ConvenienceStore.Persistence
 {
@@ -86,6 +88,8 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IImageService, ImageService>();
 
             services.AddScoped<IRoleService, RoleService>();
+
+            services.AddScoped<ICustomerService, CustomerService>();
 
             return services;
         }
