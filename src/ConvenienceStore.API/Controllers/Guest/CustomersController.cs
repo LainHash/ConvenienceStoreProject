@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
+﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -26,6 +27,16 @@ namespace ConvenienceStore.API.Controllers.Guest
             CancellationToken cancellationToken)
         {
             var query = new GetCustomerByIdQuery(id);
+            var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{id}/cart")]
+        public async Task<IActionResult> GetCart(
+            [FromRoute] string id,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetCartByCustomerIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }

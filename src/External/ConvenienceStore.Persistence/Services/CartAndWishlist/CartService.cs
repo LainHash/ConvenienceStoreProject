@@ -58,7 +58,9 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
                 await InitializeAsync(customer.Id, cancellationToken);
             }
 
-            var response = _mapper.Map<CartResponse>(cart);
+            var createdCart = await _cartRepository.FindAsync(specification, cancellationToken);
+
+            var response = _mapper.Map<CartResponse>(createdCart);
             return Result<CartResponse>
                 .Succeed(response, Success<Cart>.Retrieved);
         }
