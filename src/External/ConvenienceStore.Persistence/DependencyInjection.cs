@@ -20,6 +20,8 @@ using ConvenienceStore.Persistence.Services.Authentication;
 using ConvenienceStore.Persistence.Services.Identity;
 using ConvenienceStore.Application.Services.Guest;
 using ConvenienceStore.Persistence.Services.Guest;
+using ConvenienceStore.Application.Services.CartAndWishlist;
+using ConvenienceStore.Persistence.Services.CartAndWishlist;
 
 namespace ConvenienceStore.Persistence
 {
@@ -90,6 +92,7 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IRoleService, RoleService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICartService, CartService>();
 
             return services;
         }

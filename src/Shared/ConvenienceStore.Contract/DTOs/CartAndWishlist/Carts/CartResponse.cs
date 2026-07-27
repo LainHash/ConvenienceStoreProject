@@ -1,0 +1,32 @@
+﻿namespace ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts
+{
+    public class CartResponse
+    {
+        public string Id { get; set; } = string.Empty;
+
+        public decimal TotalPrice { get; set; }
+
+        public ICollection<CartItemResponse> CartItems { get; set; } = [];
+
+        public CartResponse()
+        {
+            TotalPrice = CartItems.Sum(x => x.LineTotal);
+        }
+    }
+
+    public class CartItemResponse
+    {
+        public string Id { get; set; } = string.Empty;
+
+        public int Quantity { get; set; }
+        public decimal LineTotal { get; set; }
+
+        public string ProductName { get; set; } = string.Empty;
+        public decimal UnitPrice { get; set; }
+
+        public CartItemResponse()
+        {
+            LineTotal = Quantity * UnitPrice;
+        }
+    }
+}

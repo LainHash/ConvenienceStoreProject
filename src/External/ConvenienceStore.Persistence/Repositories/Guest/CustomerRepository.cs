@@ -13,5 +13,10 @@ namespace ConvenienceStore.Persistence.Repositories.Guest
         {
             return await _context.Customers.FirstOrDefaultAsync(x => x.UserId == id, cancellationToken);
         }
+
+        public async Task<Customer?> FindAsync(string id, CancellationToken cancellationToken)
+        {
+            return await _context.Customers.FirstOrDefaultAsync(x => x.PublicId == id, cancellationToken);
+        }
     }
 }
