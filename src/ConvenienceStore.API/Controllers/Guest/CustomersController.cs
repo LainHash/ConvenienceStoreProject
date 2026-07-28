@@ -12,21 +12,11 @@ namespace ConvenienceStore.API.Controllers.Guest
         private readonly IMediator _mediator = mediator;
 
         [HttpGet("{userId}")]
-        public async Task<IActionResult> GetOne(
+        public async Task<IActionResult> GetOneByUser(
             [FromRoute] string userId,
             CancellationToken cancellationToken)
         {
             var query = new GetCustomerByUserIdQuery(userId);
-            var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [HttpGet("{userId}/cart")]
-        public async Task<IActionResult> GetCart(
-            [FromRoute] string userId,
-            CancellationToken cancellationToken)
-        {
-            var query = new GetCartByCustomerIdQuery(userId);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }

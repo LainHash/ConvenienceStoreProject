@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Business;
@@ -78,6 +79,18 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
 
             var cart = await _cartRepository.FindAsync(specification, cancellationToken);
             cart ??= await InitializeAsync(customer.Id, cancellationToken);
+
+            var response = _mapper.Map<CartResponse>(cart);
+            return Result<CartResponse>
+                    .Succeed(response, Success<Cart>.Retrieved);
+        }
+
+        public async Task<Result<CartResponse>> GetBySessionIdAsync(
+            GetCartBySessionIdSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
+            cart ??= await InitializeAsync(specification.SessionId, cancellationToken);
 
             var response = _mapper.Map<CartResponse>(cart);
             return Result<CartResponse>
