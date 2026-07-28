@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId;
 using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
@@ -37,6 +38,22 @@ namespace ConvenienceStore.Persistence.Services.Guest
 
             var response = _mapper.Map<IEnumerable<CustomerResponse>>(customers);
             return Result<IEnumerable<CustomerResponse>>
+                .Succeed(response, Success<Customer>.Retrieved);
+        }
+
+        public async Task<Result<CustomerResponse>> GetByIdAsync(
+            GetCustomerByIdSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var customer = await _customerRepository.FindAsync(specification, cancellationToken);
+            if (customer is null)
+            {
+                return Result<CustomerResponse>
+                    .Fail(Error<Customer>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var response = _mapper.Map<CustomerResponse>(customer);
+            return Result<CustomerResponse>
                 .Succeed(response, Success<Customer>.Retrieved);
         }
 
