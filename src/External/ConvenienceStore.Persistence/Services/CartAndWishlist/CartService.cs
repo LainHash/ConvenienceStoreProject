@@ -33,12 +33,24 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             _customerRepository = customerRepository;
         }
 
-        public async Task InitializeAsync(int customerId, CancellationToken cancellationToken)
+        public async Task<Cart> InitializeAsync(int customerId, CancellationToken cancellationToken)
         {
             var cart = new Cart(customerId);
             _cartRepository.Add(cart);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return cart;
+        }
+
+        public async Task<Cart> InitializeAsync(string sessionId, CancellationToken cancellationToken)
+        {
+            var cart = new Cart(sessionId);
+            _cartRepository.Add(cart);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return cart;
         }
 
         public async Task<Result<CartResponse>> GetByCustomerIdAsync(
@@ -53,16 +65,14 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             }
 
             var cart = await _cartRepository.FindAsync(specification, cancellationToken);
-            if(cart is null)
+            if (cart is null)
             {
-                await InitializeAsync(customer.Id, cancellationToken);
+                cart = await InitializeAsync(customer.Id, cancellationToken);
             }
 
-            var createdCart = await _cartRepository.FindAsync(specification, cancellationToken);
-
-            var response = _mapper.Map<CartResponse>(createdCart);
+            var response = _mapper.Map<CartResponse>(cart);
             return Result<CartResponse>
-                .Succeed(response, Success<Cart>.Retrieved);
+                    .Succeed(response, Success<Cart>.Retrieved);
         }
     }
 }

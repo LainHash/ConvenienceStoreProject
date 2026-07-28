@@ -1,13 +1,20 @@
-﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
+﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySession;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
+using ConvenienceStore.Domain.Entities.CartAndWishlist;
 
 namespace ConvenienceStore.Application.Services.CartAndWishlist
 {
     public interface ICartService
     {
-        Task InitializeAsync(
+        Task<Cart> InitializeAsync(
             int customerId,
+            CancellationToken cancellationToken);
+
+        Task<Cart> InitializeAsync(
+            string sessionId,
             CancellationToken cancellationToken);
 
         Task<Result<CartResponse>> GetByCustomerIdAsync(

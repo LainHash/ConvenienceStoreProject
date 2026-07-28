@@ -1,23 +1,26 @@
-﻿using ConvenienceStore.Domain.Entities.CartAndWishlist;
+﻿using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
+using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId
+namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem
 {
-    public class GetCartByCustomerIdSpecification
+    public class AddCartItemSpecification
         : BaseSpecification<Cart>
     {
         public string CustomerId { get; set; } = string.Empty;
-        public GetCartByCustomerIdSpecification(GetCartByCustomerIdQuery query)
+        public AddCartItemRequest Body { get; set; }
+        public AddCartItemSpecification(AddCartItemCommand command)
         {
             AddInclude(x => x.Customer);
             AddIncludeAggregator(x => x.Include(c => c.CartItems)
                                         .ThenInclude((CartItem ci) => ci.Product)
                                         .ThenInclude((Product p) => p.ProductStock));
-            CustomerId = query.CustomerId;
-            Criteria = c => string.Equals(c.Customer.PublicId, query.CustomerId);
+
+            Criteria = c => string.Equals(c.Customer.PublicId, command.CustomerId);
+            Body = command.Body;
+            CustomerId = command.CustomerId;
         }
     }
 }

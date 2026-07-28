@@ -3,7 +3,7 @@ using ConvenienceStore.Domain.Entities.Catalog;
 
 namespace ConvenienceStore.Domain.Entities.CartAndWishlist
 {
-    public class CartItem : AuditableEntity
+    public partial class CartItem : AuditableEntity
     {
         public int Quantity { get; private set; }
 
@@ -12,5 +12,15 @@ namespace ConvenienceStore.Domain.Entities.CartAndWishlist
 
         public Product Product { get; private set; } = null!;
         public Cart Cart { get; private set; } = null!;
+    }
+
+    public partial class CartItem
+    {
+        public CartItem() { }
+
+        public CartItem(int productId)
+        {
+            ProductId = productId;
+        }
     }
 }
