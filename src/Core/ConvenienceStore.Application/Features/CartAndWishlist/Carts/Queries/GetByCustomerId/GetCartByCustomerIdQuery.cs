@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId
 {
-    public record GetCartByCustomerIdQuery(string CustomerId)
+    public record GetCartByCustomerIdQuery(string UserId)
         : IRequest<Result<CartResponse>>
     {
     }

@@ -5,16 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById
 {
-    public class GetCustomerByIdSpecification
+    public class GetCustomerByUserIdSpecification
         : BaseSpecification<Customer>
     {
-        public GetCustomerByIdSpecification(GetCustomerByIdQuery query)
+        public GetCustomerByUserIdSpecification(GetCustomerByUserIdQuery query)
         {
-            Criteria = c => string.Equals(c.PublicId, query.Id);
-
             AddInclude(x => x.Profile!);
             AddIncludeAggregator(x => x.Include(c => c.User)
                                         .ThenInclude((User u) => u.Role));
+            Criteria = c => string.Equals(c.User.PublicId, query.UserId);
         }
     }
 }

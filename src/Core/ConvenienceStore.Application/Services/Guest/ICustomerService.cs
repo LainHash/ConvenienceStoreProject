@@ -11,8 +11,8 @@ namespace ConvenienceStore.Application.Services.Guest
             GetAllCustomersSpecification specification,
             CancellationToken cancellationToken);
 
-        Task<Result<CustomerResponse>> GetByIdAsync(
-            GetCustomerByIdSpecification specification,
+        Task<Result<CustomerResponse>> GetByUserIdAsync(
+            GetCustomerByUserIdSpecification specification,
             CancellationToken cancellationToken);
     }
 }

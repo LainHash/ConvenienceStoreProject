@@ -2,22 +2,20 @@
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId
 {
     public class GetCartByCustomerIdSpecification
         : BaseSpecification<Cart>
     {
-        public string CustomerId { get; set; } = string.Empty;
+        public string UserId { get; set; }
         public GetCartByCustomerIdSpecification(GetCartByCustomerIdQuery query)
         {
             AddInclude(x => x.Customer);
             AddIncludeAggregator(x => x.Include(c => c.CartItems)
                                         .ThenInclude((CartItem ci) => ci.Product)
                                         .ThenInclude((Product p) => p.ProductStock));
-            CustomerId = query.CustomerId;
-            Criteria = c => string.Equals(c.Customer.PublicId, query.CustomerId);
+            UserId = query.UserId;
         }
     }
 }

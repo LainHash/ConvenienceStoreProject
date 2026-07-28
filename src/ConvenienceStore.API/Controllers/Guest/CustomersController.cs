@@ -3,6 +3,8 @@ using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace ConvenienceStore.API.Controllers.Guest
 {
@@ -21,22 +23,22 @@ namespace ConvenienceStore.API.Controllers.Guest
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{userId}")]
         public async Task<IActionResult> GetOne(
-            [FromRoute] string id,
+            [FromRoute] string userId,
             CancellationToken cancellationToken)
         {
-            var query = new GetCustomerByIdQuery(id);
+            var query = new GetCustomerByUserIdQuery(userId);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{id}/cart")]
+        [HttpGet("{userId}/cart")]
         public async Task<IActionResult> GetCart(
-            [FromRoute] string id,
+            [FromRoute] string userId,
             CancellationToken cancellationToken)
         {
-            var query = new GetCartByCustomerIdQuery(id);
+            var query = new GetCartByCustomerIdQuery(userId);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }

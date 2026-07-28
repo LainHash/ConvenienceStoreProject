@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById
 {
-    public record GetCustomerByIdQuery(string Id)
+    public record GetCustomerByUserIdQuery(string UserId)
         : IRequest<Result<CustomerResponse>>
     {
     }

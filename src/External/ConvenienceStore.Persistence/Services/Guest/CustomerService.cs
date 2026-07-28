@@ -40,8 +40,8 @@ namespace ConvenienceStore.Persistence.Services.Guest
                 .Succeed(response, Success<Customer>.Retrieved);
         }
 
-        public async Task<Result<CustomerResponse>> GetByIdAsync(
-            GetCustomerByIdSpecification specification,
+        public async Task<Result<CustomerResponse>> GetByUserIdAsync(
+            GetCustomerByUserIdSpecification specification,
             CancellationToken cancellationToken)
         {
             var customer = await _customerRepository.FindAsync(specification, cancellationToken);
