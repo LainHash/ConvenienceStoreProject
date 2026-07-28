@@ -3,7 +3,7 @@ using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById
+namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId
 {
     public class GetCustomerByUserIdSpecification
         : BaseSpecification<Customer>

@@ -1,10 +1,8 @@
 ﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
-using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
 
 namespace ConvenienceStore.API.Controllers.Guest
 {

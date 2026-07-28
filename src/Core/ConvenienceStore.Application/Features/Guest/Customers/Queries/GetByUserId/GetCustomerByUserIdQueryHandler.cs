@@ -3,7 +3,7 @@ using ConvenienceStore.Application.Services.Guest;
 using ConvenienceStore.Contract.DTOs.Guest.Customers;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById
+namespace ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId
 {
     internal class GetCustomerByUserIdQueryHandler(ICustomerService customerService)
                 : IRequestHandler<GetCustomerByUserIdQuery, Result<CustomerResponse>>

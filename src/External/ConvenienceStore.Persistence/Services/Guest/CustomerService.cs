@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
-using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId;
 using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Guest;
