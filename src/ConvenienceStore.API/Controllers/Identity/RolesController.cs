@@ -8,7 +8,7 @@ using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConvenienceStore.API.Controllers.Authentication
+namespace ConvenienceStore.API.Controllers.Identity
 {
     [Route("api/[controller]")]
     [ApiController]
