@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
@@ -11,11 +11,15 @@ using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;
+using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Repositories.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Catalog;
 using ConvenienceStore.Domain.Repositories.Guest;
 using ConvenienceStore.Domain.Repositories.Identity;
+using ConvenienceStore.Domain.Repositories.Inventory;
 using ConvenienceStore.Domain.Specifications;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.CartAndWishlist
@@ -27,9 +31,11 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
         private readonly ICustomerRepository _customerRepository;
         private readonly IUserRepository _userRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IProductStockRepository _productStockRepository;
 
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<CartService> _logger;
 
         public CartService(
             ICartRepository cartRepository,
@@ -38,7 +44,9 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             ICustomerRepository customerRepository,
             IUserRepository userRepository,
             IProductRepository productRepository,
-            ICartItemRepository cartItemRepository)
+            ICartItemRepository cartItemRepository,
+            IProductStockRepository productStockRepository,
+            ILogger<CartService> logger)
         {
             _cartRepository = cartRepository;
             _unitOfWork = unitOfWork;
@@ -47,6 +55,8 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             _userRepository = userRepository;
             _productRepository = productRepository;
             _cartItemRepository = cartItemRepository;
+            _productStockRepository = productStockRepository;
+            _logger = logger;
         }
 
         public async Task<Result<CartResponse>> GetByCustomerIdAsync(
@@ -89,6 +99,12 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             AddCartItemSpecification specification,
             CancellationToken cancellationToken)
         {
+            if (string.IsNullOrEmpty(specification.Body.UserId) && string.IsNullOrEmpty(specification.Body.SessionId))
+            {
+                return Result<CartResponse>
+                        .Fail("Either user id or session id must be not null.", HttpStatusCode.NotFound);
+            }
+
             var cart = new Cart();
             if (!string.IsNullOrEmpty(specification.Body.UserId))
             {
@@ -103,26 +119,32 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
                 if (customer is null)
                 {
                     return Result<CartResponse>
-                        .Fail(Error<Customer>.NotFound, HttpStatusCode.InternalServerError);
+                        .Fail(Error<Customer>.NotFound, HttpStatusCode.NotFound);
                 }
 
                 cart = await GetOrCreateAsync(specification, () => new Cart(customer.Id), cancellationToken);
             }
-
-            if (!string.IsNullOrEmpty(specification.Body.SessionId))
+            else if (!string.IsNullOrEmpty(specification.Body.SessionId))
             {
                 cart = await GetOrCreateAsync(specification, () => new Cart(specification.Body.SessionId), cancellationToken);
             }
 
             var product = await _productRepository.FindAsync(specification.Body.ProductId, cancellationToken);
-            if(product is null)
+            if (product is null)
             {
                 return Result<CartResponse>
-                        .Fail(Error<Product>.NotFound, HttpStatusCode.NotFound);
+                    .Fail(Error<Product>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var productStock = await _productStockRepository.FindByProductAsync(product.Id, cancellationToken);
+            if(productStock!.QuantityOnHand < 1)
+            {
+                return Result<CartResponse>
+                    .Fail("Out of stock.", HttpStatusCode.UnprocessableEntity);
             }
 
             var cartItem = cart.CartItems.FirstOrDefault(x => x.ProductId == product.Id);
-            if(cartItem is null)
+            if (cartItem is null)
             {
                 cartItem = new CartItem(product.Id);
                 _cartItemRepository.Add(cartItem);
@@ -134,7 +156,19 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
                 _cartItemRepository.Update(cartItem);
             }
 
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException ex)
+            {
+                _logger.LogWarning(ex,
+                    "Concurrency conflict when adding item to cart.");
+
+                return Result<CartResponse>
+                    .Fail("Cart was modified by another request. Please try again.",
+                          HttpStatusCode.Conflict);
+            }
 
             specification.ApplyCriteria(cart.Id);
             var addedItemCart = await _cartRepository.FindAsync(specification, cancellationToken);

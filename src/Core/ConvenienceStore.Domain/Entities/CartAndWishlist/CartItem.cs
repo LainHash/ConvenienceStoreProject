@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
 
 namespace ConvenienceStore.Domain.Entities.CartAndWishlist
@@ -9,6 +9,12 @@ namespace ConvenienceStore.Domain.Entities.CartAndWishlist
 
         public int ProductId { get; private set; }
         public int CartId { get; private set; }
+
+        /// <summary>
+        /// PostgreSQL system column — tự động tăng mỗi khi row bị UPDATE.
+        /// Dùng làm optimistic concurrency token bởi Npgsql EF Core.
+        /// </summary>
+        public uint Version { get; private set; }
 
         public Product Product { get; private set; } = null!;
         public Cart Cart { get; private set; } = null!;
