@@ -1,15 +1,15 @@
-using ConvenienceStore.Domain.Entities.CartAndWishlist;
+﻿using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ConvenienceStore.Persistence.Configurations.CartAndWishlist
 {
-    internal class CartItemConfiguration
-        : IEntityTypeConfiguration<CartItem>
+    internal class WishlistItemConfiguration
+        : IEntityTypeConfiguration<WishlistItem>
     {
-        public void Configure(EntityTypeBuilder<CartItem> builder)
+        public void Configure(EntityTypeBuilder<WishlistItem> builder)
         {
-            builder.ToTable("CartItems");
+            builder.ToTable("WishlistItems");
 
             builder.HasKey(x => x.Id);
 
@@ -19,14 +19,8 @@ namespace ConvenienceStore.Persistence.Configurations.CartAndWishlist
             builder.Property(x => x.PublicId)
                 .IsRequired();
 
-            builder.Property(x => x.Version)
-                .HasColumnName("xmin")
-                .HasColumnType("xid")
-                .IsConcurrencyToken()
-                .ValueGeneratedOnAddOrUpdate();
-
             builder.HasOne(x => x.Product)
-                .WithMany(x => x.CartItems)
+                .WithMany(x => x.WishlistItems)
                 .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }

@@ -93,6 +93,7 @@ namespace ConvenienceStore.Persistence
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IWishlistService, WishlistService>();
 
             return services;
         }

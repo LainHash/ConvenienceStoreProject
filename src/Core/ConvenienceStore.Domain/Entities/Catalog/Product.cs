@@ -19,6 +19,7 @@ namespace ConvenienceStore.Domain.Entities.Catalog
 
         public ICollection<ProductImage> ProductImages { get; private set; } = [];
         public ICollection<CartItem> CartItems { get; private set; } = [];
+        public ICollection<WishlistItem> WishlistItems { get; private set; } = [];
     }
 
     public partial class Product
