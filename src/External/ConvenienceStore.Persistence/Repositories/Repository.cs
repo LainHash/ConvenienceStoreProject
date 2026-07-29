@@ -6,7 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConvenienceStore.Persistence.Repositories
 {
-    internal class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    internal class Repository<TEntity> : IRepository<TEntity> 
+        where TEntity : class
     {
         private readonly ConvenienceStoreDbContext _context;
         protected readonly DbSet<TEntity> Entity;
@@ -61,6 +62,14 @@ namespace ConvenienceStore.Persistence.Repositories
                 .GetQuery(Entity.AsQueryable(), specification, applyPaging: false);
 
             return await query.CountAsync(cancellationToken);
+        }
+
+        public async Task<bool> AnyAsync(ISpecification<TEntity> specification, CancellationToken cancellationToken = default)
+        {
+            var query = SpecificationEvaluator
+                .GetQuery(Entity.AsQueryable(), specification, applyPaging: false);
+
+            return await query.AnyAsync(cancellationToken);
         }
     }
 }

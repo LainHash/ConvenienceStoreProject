@@ -7,11 +7,6 @@
         public decimal TotalPrice { get; set; }
 
         public ICollection<CartItemResponse> CartItems { get; set; } = [];
-
-        public CartResponse()
-        {
-            TotalPrice = CartItems.Sum(x => x.LineTotal);
-        }
     }
 
     public class CartItemResponse
@@ -23,10 +18,5 @@
 
         public string ProductName { get; set; } = string.Empty;
         public decimal UnitPrice { get; set; }
-
-        public CartItemResponse()
-        {
-            LineTotal = Quantity * UnitPrice;
-        }
     }
 }

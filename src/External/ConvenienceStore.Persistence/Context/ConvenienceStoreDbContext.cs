@@ -12,13 +12,9 @@ using System.Reflection;
 
 namespace ConvenienceStore.Persistence.Context
 {
-    internal class ConvenienceStoreDbContext : DbContext
+    internal class ConvenienceStoreDbContext(DbContextOptions<ConvenienceStoreDbContext> options) 
+        : DbContext(options)
     {
-        public ConvenienceStoreDbContext(DbContextOptions<ConvenienceStoreDbContext> options)
-            : base(options)
-        {
-        }
-
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;

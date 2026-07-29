@@ -9,7 +9,6 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.A
     public class AddCartItemSpecification
         : BaseSpecification<Cart>
     {
-        public string CustomerId { get; set; } = string.Empty;
         public AddCartItemRequest Body { get; set; }
         public AddCartItemSpecification(AddCartItemCommand command)
         {
@@ -18,9 +17,12 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.A
                                         .ThenInclude((CartItem ci) => ci.Product)
                                         .ThenInclude((Product p) => p.ProductStock));
 
-            Criteria = c => string.Equals(c.Customer.PublicId, command.CustomerId);
             Body = command.Body;
-            CustomerId = command.CustomerId;
+        }
+
+        public void ApplyCriteria(int id)
+        {
+            Criteria = c => c.Id == id;
         }
     }
 }

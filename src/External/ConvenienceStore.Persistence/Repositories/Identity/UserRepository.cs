@@ -9,6 +9,12 @@ namespace ConvenienceStore.Persistence.Repositories.Identity
         : Repository<User>(context), IUserRepository
     {
         private readonly ConvenienceStoreDbContext _context = context;
+
+        public async Task<bool> AnyAsync(string id, CancellationToken cancellationToken = default)
+        {
+            return await _context.Users.AnyAsync(x => string.Equals(x.PublicId, id), cancellationToken);
+        }
+
         public async Task<User?> FindAsync(string id, CancellationToken cancellationToken = default)
         {
             return await _context.Users.FirstOrDefaultAsync(x => string.Equals(x.PublicId, id), cancellationToken);

@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
+﻿using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -11,12 +12,21 @@ namespace ConvenienceStore.API.Controllers.Guest
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("{userId}")]
-        public async Task<IActionResult> GetOneByUser(
-            [FromRoute] string userId,
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] GetAllCustomersQuery query,
             CancellationToken cancellationToken)
         {
-            var query = new GetCustomerByUserIdQuery(userId);
+            var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetOne(
+            [FromRoute] string id,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetCustomerByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
