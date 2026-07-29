@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Application.Models.Messages;
@@ -12,6 +13,7 @@ using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Repositories.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Guest;
 using ConvenienceStore.Domain.Repositories.Identity;
+using ConvenienceStore.Domain.Specifications;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.CartAndWishlist
@@ -39,26 +41,6 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             _userRepository = userRepository;
         }
 
-        public async Task<Cart> InitializeAsync(int customerId, CancellationToken cancellationToken)
-        {
-            var cart = new Cart(customerId);
-            _cartRepository.Add(cart);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return cart;
-        }
-
-        public async Task<Cart> InitializeAsync(string sessionId, CancellationToken cancellationToken)
-        {
-            var cart = new Cart(sessionId);
-            _cartRepository.Add(cart);
-
-            await _unitOfWork.SaveChangesAsync(cancellationToken);
-
-            return cart;
-        }
-
         public async Task<Result<CartResponse>> GetByCustomerIdAsync(
             GetCartByCustomerIdSpecification specification,
             CancellationToken cancellationToken)
@@ -77,8 +59,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
                     .Fail(Error<Customer>.NotFound, HttpStatusCode.NotFound);
             }
 
-            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
-            cart ??= await InitializeAsync(customer.Id, cancellationToken);
+            var cart = await GetOrCreateAsync(specification, () => new Cart(customer.Id), cancellationToken);
 
             var response = _mapper.Map<CartResponse>(cart);
             return Result<CartResponse>
@@ -89,17 +70,43 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             GetCartBySessionIdSpecification specification,
             CancellationToken cancellationToken)
         {
-            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
-            cart ??= await InitializeAsync(specification.SessionId, cancellationToken);
+            var cart = await GetOrCreateAsync(specification, () => new Cart(specification.SessionId), cancellationToken);
 
             var response = _mapper.Map<CartResponse>(cart);
             return Result<CartResponse>
                     .Succeed(response, Success<Cart>.Retrieved);
         }
 
-        public Task<Result<CartResponse>> AddItemAsync()
+        public Task<Result<CartResponse>> AddItemAsync(
+            AddCartItemSpecification specification,
+            CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
+        }
+
+        private async Task<Cart> InitializeAsync(
+            Func<Cart> factory,
+            CancellationToken cancellationToken)
+        {
+            var cart = factory();
+
+            _cartRepository.Add(cart);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return cart;
+        }
+
+        private async Task<Cart> GetOrCreateAsync(
+            ISpecification<Cart> specification,
+            Func<Cart> factory,
+            CancellationToken cancellationToken)
+        {
+            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
+
+            if (cart is not null)
+                return cart;
+
+            return await InitializeAsync(factory, cancellationToken);
         }
     }
 }

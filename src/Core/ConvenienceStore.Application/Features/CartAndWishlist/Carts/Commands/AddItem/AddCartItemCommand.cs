@@ -4,7 +4,7 @@ using MediatR;
 
 namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem
 {
-    public record AddCartItemCommand(string CustomerId, AddCartItemRequest Body)
+    public record AddCartItemCommand(CartIdentifier Identifier, AddCartItemRequest Body)
         : IRequest<Result<CartResponse>>
     {
     }
