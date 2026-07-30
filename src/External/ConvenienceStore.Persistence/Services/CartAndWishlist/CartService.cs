@@ -20,6 +20,7 @@ using ConvenienceStore.Domain.Repositories.Inventory;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.CartAndWishlist
@@ -137,7 +138,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             }
 
             var productStock = await _productStockRepository.FindByProductAsync(product.Id, cancellationToken);
-            if(productStock!.QuantityOnHand < 1)
+            if (productStock!.QuantityOnHand < 1)
             {
                 return Result<CartResponse>
                     .Fail("Out of stock.", HttpStatusCode.UnprocessableEntity);
@@ -183,7 +184,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             CancellationToken cancellationToken)
         {
             var cart = await _cartRepository.FindAsync(specification, cancellationToken);
-            if(cart is null)
+            if (cart is null)
             {
                 return Result<CartResponse>
                     .Fail(Error<CartItem>.NotFound, HttpStatusCode.NotFound);
@@ -192,20 +193,14 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             var cartItem = cart.CartItems.First(x => string.Equals(x.PublicId, specification.CartItemId));
 
             var productStock = await _productStockRepository.FindByProductAsync(cartItem.Product.Id, cancellationToken);
-            if (productStock!.QuantityOnHand < specification.Body.Amount)
-            {
-                return Result<CartResponse>
-                    .Fail("Out of stock.", HttpStatusCode.UnprocessableEntity);
-            }
 
-            cartItem.ChangeQuantity(specification.Body.Amount);
-            _cartItemRepository.Update(cartItem);
+            cart.ChangeItemQuantity(specification.CartItemId, specification.Body.Amount, productStock!.QuantityOnHand);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             var response = _mapper.Map<CartResponse>(cart);
             return Result<CartResponse>
-                    .Succeed(response, Success<CartItem>.Added, HttpStatusCode.Accepted);
+                    .Succeed(response, Success<CartItem>.Updated);
         }
 
         private async Task<Cart> InitializeAsync(

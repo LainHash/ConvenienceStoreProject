@@ -30,5 +30,10 @@ namespace ConvenienceStore.Domain.Entities.CartAndWishlist
         {
             Quantity += amount;
         }
+
+        public void SetQuantity(int quantity)
+        {
+            Quantity = quantity;
+        }
     }
 }

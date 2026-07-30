@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
@@ -39,6 +40,17 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
             CancellationToken cancellationToken)
         {
             var command = new AddCartItemCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("items/{cartItemId}")]
+        public async Task<IActionResult> UpdateItemQuantity(
+            [FromRoute] string cartItemId,
+            [FromBody] UpdateCartItemQuantityRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateCartItemQuantityCommand(cartItemId, body);
             var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
