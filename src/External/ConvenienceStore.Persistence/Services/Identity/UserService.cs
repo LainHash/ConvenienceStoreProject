@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
+using ConvenienceStore.Application.Features.Identity.Users.Commands.ChangePassword;
 using ConvenienceStore.Application.Features.Identity.Users.Commands.Update;
 using ConvenienceStore.Application.Features.Identity.Users.Queries.GetAll;
 using ConvenienceStore.Application.Features.Identity.Users.Queries.GetById;
 using ConvenienceStore.Application.Models.Messages;
 using ConvenienceStore.Application.Models.Results;
+using ConvenienceStore.Application.Services.Authentication;
 using ConvenienceStore.Application.Services.Business;
 using ConvenienceStore.Application.Services.Identity;
 using ConvenienceStore.Contract.DTOs.Identity.Users;
@@ -19,15 +21,18 @@ namespace ConvenienceStore.Persistence.Services.Identity
 
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IPasswordHasher _passwordHasher;
 
         public UserService(
             IUserRepository userRepository,
             IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IPasswordHasher passwordHasher)
         {
             _userRepository = userRepository;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<Result<IEnumerable<UserResponse>>> GetAllAsync(
@@ -80,6 +85,31 @@ namespace ConvenienceStore.Persistence.Services.Identity
             var response = _mapper.Map<UserResponse>(user);
             return Result<UserResponse>
                 .Succeed(response, Success<User>.Updated, HttpStatusCode.Accepted);
+        }
+
+        public async Task<Result<object>> ChangePasswordAsync(
+            ChangeUserPasswordSpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var user = await _userRepository.FindAsync(specification, cancellationToken);
+            if (user is null)
+            {
+                return Result<object>
+                    .Fail(Error<User>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            if(!_passwordHasher.VerifyPassword(specification.Body.CurrentPassword, user.PasswordHash))
+            {
+                return Result<object>
+                    .Fail("The current password is incorrect.");
+            }
+
+            user.ChangePassword(_passwordHasher.HashPassword(specification.Body.NewPassword));
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            return Result<object>
+                .Succeed(default, "Change password successfully", HttpStatusCode.Accepted);
         }
     }
 }

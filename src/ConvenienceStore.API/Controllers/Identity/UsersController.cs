@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Identity.Users.Commands.Update;
+﻿using ConvenienceStore.Application.Features.Identity.Users.Commands.ChangePassword;
+using ConvenienceStore.Application.Features.Identity.Users.Commands.Update;
 using ConvenienceStore.Application.Features.Identity.Users.Queries.GetAll;
 using ConvenienceStore.Application.Features.Identity.Users.Queries.GetById;
 using ConvenienceStore.Contract.DTOs.Identity.Users;
@@ -40,6 +41,17 @@ namespace ConvenienceStore.API.Controllers.Identity
             CancellationToken cancellationToken)
         {
             var command = new UpdateUserCommand(id, body);
+            var result = await _mediator.Send(command, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("{id}/change-password")]
+        public async Task<IActionResult> Update(
+            [FromRoute] string id,
+            [FromBody] ChangeUserPasswordRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new ChangeUserPasswordCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
