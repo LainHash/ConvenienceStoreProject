@@ -3,7 +3,7 @@ using ConvenienceStore.Application.Services.Identity;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Create
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Create
 {
     internal class CreateRoleCommandHandler
         : IRequestHandler<CreateRoleCommand, Result<RoleResponse>>

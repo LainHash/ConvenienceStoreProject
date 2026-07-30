@@ -3,7 +3,7 @@ using ConvenienceStore.Application.Services.Identity;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Update
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Update
 {
     internal class UpdateRoleCommandHandler
         : IRequestHandler<UpdateRoleCommand, Result<RoleResponse>>

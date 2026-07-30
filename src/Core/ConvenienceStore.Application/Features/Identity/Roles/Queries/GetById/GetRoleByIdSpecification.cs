@@ -1,7 +1,7 @@
 using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Specifications;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetById
+namespace ConvenienceStore.Application.Features.Identity.Roles.Queries.GetById
 {
     public class GetRoleByIdSpecification
         : BaseSpecification<Role>

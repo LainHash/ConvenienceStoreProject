@@ -3,7 +3,7 @@ using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetAll
+namespace ConvenienceStore.Application.Features.Identity.Roles.Queries.GetAll
 {
     public class GetAllRolesSpecification
         : BaseSpecification<Role>

@@ -2,9 +2,9 @@ using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Create
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Update
 {
-    public record CreateRoleCommand(CreateRoleRequest Body)
+    public record UpdateRoleCommand(string Id, UpdateRoleRequest Body)
         : IRequest<Result<RoleResponse>>
     {
     }

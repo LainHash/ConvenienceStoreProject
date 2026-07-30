@@ -2,7 +2,7 @@ using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Identity;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Delete
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Delete
 {
     internal class DeleteRoleCommandHandler
         : IRequestHandler<DeleteRoleCommand, Result<object>>

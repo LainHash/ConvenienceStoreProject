@@ -1,9 +1,9 @@
-using ConvenienceStore.Application.Features.Authentication.Roles.Commands.Create;
-using ConvenienceStore.Application.Features.Authentication.Roles.Commands.Delete;
-using ConvenienceStore.Application.Features.Authentication.Roles.Commands.Restore;
-using ConvenienceStore.Application.Features.Authentication.Roles.Commands.Update;
-using ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetAll;
-using ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetById;
+using ConvenienceStore.Application.Features.Identity.Roles.Commands.Create;
+using ConvenienceStore.Application.Features.Identity.Roles.Commands.Delete;
+using ConvenienceStore.Application.Features.Identity.Roles.Commands.Restore;
+using ConvenienceStore.Application.Features.Identity.Roles.Commands.Update;
+using ConvenienceStore.Application.Features.Identity.Roles.Queries.GetById;
+using ConvenienceStore.Application.Features.Identity.Roles.Queries.GetAll;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

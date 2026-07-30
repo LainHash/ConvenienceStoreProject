@@ -1,11 +1,11 @@
 using FluentValidation;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Create
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Update
 {
-    public class CreateRoleValidator
-        : AbstractValidator<CreateRoleCommand>
+    public class UpdateRoleValidator
+        : AbstractValidator<UpdateRoleCommand>
     {
-        public CreateRoleValidator()
+        public UpdateRoleValidator()
         {
             RuleFor(x => x.Body.Name)
                 .NotEmpty().WithMessage("Name is required.")

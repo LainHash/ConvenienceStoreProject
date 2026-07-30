@@ -2,7 +2,7 @@ using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Specifications;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Update
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Update
 {
     public class UpdateRoleSpecification
         : BaseSpecification<Role>

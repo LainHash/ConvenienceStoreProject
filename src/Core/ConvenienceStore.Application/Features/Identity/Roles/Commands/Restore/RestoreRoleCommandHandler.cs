@@ -2,7 +2,7 @@ using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Application.Services.Identity;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Commands.Restore
+namespace ConvenienceStore.Application.Features.Identity.Roles.Commands.Restore
 {
     internal class RestoreRoleCommandHandler
         : IRequestHandler<RestoreRoleCommand, Result<object>>

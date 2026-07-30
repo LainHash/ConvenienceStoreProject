@@ -3,7 +3,7 @@ using ConvenienceStore.Application.Services.Identity;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetAll
+namespace ConvenienceStore.Application.Features.Identity.Roles.Queries.GetAll
 {
     internal class GetAllRolesQueryHandler
         : IRequestHandler<GetAllRolesQuery, PageResult<IEnumerable<RoleResponse>>>
