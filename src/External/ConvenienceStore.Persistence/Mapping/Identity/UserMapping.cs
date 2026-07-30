@@ -13,6 +13,8 @@ namespace ConvenienceStore.Persistence.Mapping.Identity
             CreateMap<User, UserResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+
+            CreateMap<UpdateUserRequest, User>();
         }
     }
 }

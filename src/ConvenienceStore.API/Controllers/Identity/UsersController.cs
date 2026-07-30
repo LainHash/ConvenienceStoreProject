@@ -1,7 +1,10 @@
-﻿using ConvenienceStore.Application.Features.Identity.Users.Queries.GetAll;
+﻿using ConvenienceStore.Application.Features.Identity.Users.Commands.Update;
+using ConvenienceStore.Application.Features.Identity.Users.Queries.GetAll;
 using ConvenienceStore.Application.Features.Identity.Users.Queries.GetById;
+using ConvenienceStore.Contract.DTOs.Identity.Users;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.Identity
 {
@@ -27,6 +30,17 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var query = new GetUserByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+            [FromRoute] string id,
+            [FromBody] UpdateUserRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateUserCommand(id, body);
+            var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
     }
