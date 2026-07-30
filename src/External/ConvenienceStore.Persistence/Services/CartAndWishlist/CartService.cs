@@ -193,8 +193,15 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             var cartItem = cart.CartItems.First(x => string.Equals(x.PublicId, specification.CartItemId));
 
             var productStock = await _productStockRepository.FindByProductAsync(cartItem.Product.Id, cancellationToken);
-
-            cart.ChangeItemQuantity(specification.CartItemId, specification.Body.Amount, productStock!.QuantityOnHand);
+            try
+            {
+                cart.ChangeItemQuantity(specification.CartItemId, specification.Body.Amount, productStock!.QuantityOnHand);
+            }
+            catch (Exception ex)
+            {
+                return Result<CartResponse>
+                    .Fail(ex.Message, HttpStatusCode.UnprocessableEntity);
+            }
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
