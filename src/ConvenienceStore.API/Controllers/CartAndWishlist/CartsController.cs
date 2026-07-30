@@ -4,7 +4,6 @@ using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByS
 using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.CartAndWishlist
 {
@@ -14,7 +13,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("/api/Customers/{userId}/cart")]
+        [HttpGet("/api/Customers/user/{userId}/cart")]
         public async Task<IActionResult> GetCustomerCart(
             [FromRoute] string userId,
             CancellationToken cancellationToken)

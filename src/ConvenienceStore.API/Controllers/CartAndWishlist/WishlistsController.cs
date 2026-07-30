@@ -14,7 +14,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("/api/Customers/{userId}/wishlist")]
+        [HttpGet("/api/Customers/user/{userId}/wishlist")]
         public async Task<IActionResult> GetCustomerWishlist(
             [FromRoute] string userId,
             CancellationToken cancellationToken)
