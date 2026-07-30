@@ -1,7 +1,10 @@
+using ConvenienceStore.Application.Features.CartAndWishlist.Wishlists.Commands.AddItem;
 using ConvenienceStore.Application.Features.CartAndWishlist.Wishlists.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Wishlists.Queries.GetBySessionId;
+using ConvenienceStore.Contract.DTOs.CartAndWishlist.Wishlists;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.CartAndWishlist
 {
@@ -28,6 +31,16 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
         {
             var query = new GetWishlistBySessionIdQuery(sessionId);
             var result = await _mediator.Send(query, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("add-item")]
+        public async Task<IActionResult> AddItem(
+            [FromBody] AddWishlistItemRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new AddWishlistItemCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }
     }
