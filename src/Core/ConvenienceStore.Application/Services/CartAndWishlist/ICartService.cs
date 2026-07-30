@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Application.Models.Results;
@@ -19,6 +20,10 @@ namespace ConvenienceStore.Application.Services.CartAndWishlist
 
         Task<Result<CartResponse>> AddItemAsync(
             AddCartItemSpecification specification,
+            CancellationToken cancellationToken);
+
+        Task<Result<CartResponse>> UpdateItemQuantityAsync(
+            UpdateCartItemQuantitySpecification specification,
             CancellationToken cancellationToken);
     }
 }

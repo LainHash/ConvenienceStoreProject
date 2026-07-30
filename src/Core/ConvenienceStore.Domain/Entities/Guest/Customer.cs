@@ -12,6 +12,7 @@ namespace ConvenienceStore.Domain.Entities.Guest
         public User User { get; private set; } = null!;
         public Profile? Profile { get; private set; } = null!;
         public Cart? Cart { get; private set; }
+        public Wishlist? Wishlist { get; private set; }
     }
 
     public partial class Customer

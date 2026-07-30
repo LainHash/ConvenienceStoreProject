@@ -1,5 +1,6 @@
 using AutoMapper;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Application.Models.Messages;
@@ -11,7 +12,6 @@ using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;
-using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Repositories.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Catalog;
 using ConvenienceStore.Domain.Repositories.Guest;
@@ -20,6 +20,7 @@ using ConvenienceStore.Domain.Repositories.Inventory;
 using ConvenienceStore.Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Collections;
 using System.Net;
 
 namespace ConvenienceStore.Persistence.Services.CartAndWishlist
@@ -137,7 +138,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             }
 
             var productStock = await _productStockRepository.FindByProductAsync(product.Id, cancellationToken);
-            if(productStock!.QuantityOnHand < 1)
+            if (productStock!.QuantityOnHand < 1)
             {
                 return Result<CartResponse>
                     .Fail("Out of stock.", HttpStatusCode.UnprocessableEntity);
@@ -147,13 +148,11 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             if (cartItem is null)
             {
                 cartItem = new CartItem(product.Id);
-                _cartItemRepository.Add(cartItem);
                 cart.CartItems.Add(cartItem);
             }
             else
             {
-                cartItem.IncreaseQuantity();
-                _cartItemRepository.Update(cartItem);
+                cartItem.ChangeQuantity();
             }
 
             try
@@ -176,6 +175,38 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             var response = _mapper.Map<CartResponse>(addedItemCart);
             return Result<CartResponse>
                     .Succeed(response, Success<CartItem>.Added, HttpStatusCode.Created);
+        }
+
+        public async Task<Result<CartResponse>> UpdateItemQuantityAsync(
+            UpdateCartItemQuantitySpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
+            if (cart is null)
+            {
+                return Result<CartResponse>
+                    .Fail(Error<CartItem>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var cartItem = cart.CartItems.First(x => string.Equals(x.PublicId, specification.CartItemId));
+
+            var productStock = await _productStockRepository.FindByProductAsync(cartItem.Product.Id, cancellationToken);
+
+            try
+            {
+                cart.ChangeItemQuantity(specification.CartItemId, specification.Body.Amount, productStock!.QuantityOnHand);
+            }
+            catch (Exception ex)
+            {
+                return Result<CartResponse>
+                    .Fail(ex.Message, HttpStatusCode.UnprocessableEntity);
+            }
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var response = _mapper.Map<CartResponse>(cart);
+            return Result<CartResponse>
+                    .Succeed(response, Success<CartItem>.Updated);
         }
 
         private async Task<Cart> InitializeAsync(

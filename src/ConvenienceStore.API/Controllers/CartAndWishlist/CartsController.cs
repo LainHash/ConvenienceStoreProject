@@ -1,10 +1,10 @@
 ﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.CartAndWishlist
 {
@@ -14,7 +14,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("/api/Customers/{userId}/cart")]
+        [HttpGet("/api/Customers/user/{userId}/cart")]
         public async Task<IActionResult> GetCustomerCart(
             [FromRoute] string userId,
             CancellationToken cancellationToken)
@@ -40,6 +40,17 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
             CancellationToken cancellationToken)
         {
             var command = new AddCartItemCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPatch("items/{cartItemId}")]
+        public async Task<IActionResult> UpdateItemQuantity(
+            [FromRoute] string cartItemId,
+            [FromBody] UpdateCartItemQuantityRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new UpdateCartItemQuantityCommand(cartItemId, body);
             var result = await _mediator.Send(command, cancellationToken);
             return StatusCode(result.StatusCode, result);
         }

@@ -1,4 +1,5 @@
 using ConvenienceStore.Contract.DTOs.Storage.Images;
+using ConvenienceStore.Domain.Enums;
 
 namespace ConvenienceStore.Contract.DTOs.Catalog.Products
 {
@@ -14,6 +15,8 @@ namespace ConvenienceStore.Contract.DTOs.Catalog.Products
         public decimal UnitPrice { get; set; }
         public string Unit { get; set; } = string.Empty;
         public int QuantityOnHand { get; set; }
+
+        public StockStatus StockStatus { get; set; }
 
         public IEnumerable<ImageResponse> Images { get; set; } = [];
         public ImageResponse? PrimaryImage { get; set; }
