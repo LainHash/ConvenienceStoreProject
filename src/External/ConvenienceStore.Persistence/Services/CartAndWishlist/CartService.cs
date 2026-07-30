@@ -1,5 +1,6 @@
 using AutoMapper;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
 using ConvenienceStore.Application.Models.Messages;
@@ -11,7 +12,6 @@ using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
 using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;
-using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Repositories.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Catalog;
 using ConvenienceStore.Domain.Repositories.Guest;
@@ -152,7 +152,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             }
             else
             {
-                cartItem.IncreaseQuantity();
+                cartItem.ChangeQuantity();
                 _cartItemRepository.Update(cartItem);
             }
 
@@ -176,6 +176,36 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             var response = _mapper.Map<CartResponse>(addedItemCart);
             return Result<CartResponse>
                     .Succeed(response, Success<CartItem>.Added, HttpStatusCode.Created);
+        }
+
+        public async Task<Result<CartResponse>> UpdateItemQuantityAsync(
+            UpdateCartItemQuantitySpecification specification,
+            CancellationToken cancellationToken)
+        {
+            var cart = await _cartRepository.FindAsync(specification, cancellationToken);
+            if(cart is null)
+            {
+                return Result<CartResponse>
+                    .Fail(Error<CartItem>.NotFound, HttpStatusCode.NotFound);
+            }
+
+            var cartItem = cart.CartItems.First(x => string.Equals(x.PublicId, specification.CartItemId));
+
+            var productStock = await _productStockRepository.FindByProductAsync(cartItem.Product.Id, cancellationToken);
+            if (productStock!.QuantityOnHand < specification.Body.Amount)
+            {
+                return Result<CartResponse>
+                    .Fail("Out of stock.", HttpStatusCode.UnprocessableEntity);
+            }
+
+            cartItem.ChangeQuantity(specification.Body.Amount);
+            _cartItemRepository.Update(cartItem);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
+
+            var response = _mapper.Map<CartResponse>(cart);
+            return Result<CartResponse>
+                    .Succeed(response, Success<CartItem>.Added, HttpStatusCode.Accepted);
         }
 
         private async Task<Cart> InitializeAsync(

@@ -23,10 +23,10 @@ namespace ConvenienceStore.Domain.Entities.CartAndWishlist
         public CartItem(int productId)
         {
             ProductId = productId;
-            IncreaseQuantity();
+            ChangeQuantity();
         }
 
-        public void IncreaseQuantity(int amount = 1)
+        public void ChangeQuantity(int amount = 1)
         {
             Quantity += amount;
         }
