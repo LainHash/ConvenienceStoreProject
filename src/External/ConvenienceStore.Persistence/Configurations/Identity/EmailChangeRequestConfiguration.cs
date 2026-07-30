@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Entities.Identity;
+using ConvenienceStore.Domain.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,6 +22,10 @@ namespace ConvenienceStore.Persistence.Configurations.Identity
             builder.Property(x => x.NewEmail)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            builder.Property(x => x.CurrentEmailConfirmed)
+                .IsRequired()
+                .HasDefaultValue(false);
 
             builder.HasOne(x => x.User)
                 .WithMany(x => x.EmailChangeRequests)
