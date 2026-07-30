@@ -1,3 +1,5 @@
+using ConvenienceStore.Domain.Enums;
+
 namespace ConvenienceStore.Contract.DTOs.CartAndWishlist.Wishlists
 {
     public class WishlistResponse
@@ -13,5 +15,7 @@ namespace ConvenienceStore.Contract.DTOs.CartAndWishlist.Wishlists
 
         public string ProductName { get; set; } = string.Empty;
         public decimal UnitPrice { get; set; }
+
+        public StockStatus StockStatus { get; set; }
     }
 }

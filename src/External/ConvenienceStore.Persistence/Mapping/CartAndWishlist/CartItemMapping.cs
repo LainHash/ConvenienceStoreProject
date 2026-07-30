@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ConvenienceStore.Application.Extensions;
 using ConvenienceStore.Contract.DTOs.CartAndWishlist.Carts;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
 
@@ -12,7 +13,8 @@ namespace ConvenienceStore.Persistence.Mapping.CartAndWishlist
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.ProductStock.UnitPrice))
-                .ForMember(dest => dest.LineTotal, opt => opt.MapFrom(src => src.Product.ProductStock.UnitPrice * src.Quantity));
+                .ForMember(dest => dest.LineTotal, opt => opt.MapFrom(src => src.Product.ProductStock.UnitPrice * src.Quantity))
+                .ForMember(dest => dest.StockStatus, opt => opt.MapFrom(src => src.Product.ProductStock.QuantityOnHand.ToStockStatus()));
         }
     }
 }

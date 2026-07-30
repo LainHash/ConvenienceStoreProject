@@ -148,13 +148,11 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             if (cartItem is null)
             {
                 cartItem = new CartItem(product.Id);
-                _cartItemRepository.Add(cartItem);
                 cart.CartItems.Add(cartItem);
             }
             else
             {
                 cartItem.ChangeQuantity();
-                _cartItemRepository.Update(cartItem);
             }
 
             try
@@ -193,6 +191,7 @@ namespace ConvenienceStore.Persistence.Services.CartAndWishlist
             var cartItem = cart.CartItems.First(x => string.Equals(x.PublicId, specification.CartItemId));
 
             var productStock = await _productStockRepository.FindByProductAsync(cartItem.Product.Id, cancellationToken);
+
             try
             {
                 cart.ChangeItemQuantity(specification.CartItemId, specification.Body.Amount, productStock!.QuantityOnHand);
