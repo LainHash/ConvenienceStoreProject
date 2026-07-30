@@ -19,5 +19,6 @@ namespace ConvenienceStore.Application.Services.Guest
         Task<Result<CustomerResponse>> GetByUserIdAsync(
             GetCustomerByUserIdSpecification specification,
             CancellationToken cancellationToken);
+
     }
 }

@@ -1,6 +1,6 @@
-using ConvenienceStore.Application.Features.Authentication.Roles.Commands.Update;
-using ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetAll;
-using ConvenienceStore.Application.Features.Authentication.Roles.Queries.GetById;
+using ConvenienceStore.Application.Features.Identity.Roles.Commands.Update;
+using ConvenienceStore.Application.Features.Identity.Roles.Queries.GetAll;
+using ConvenienceStore.Application.Features.Identity.Roles.Queries.GetById;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 

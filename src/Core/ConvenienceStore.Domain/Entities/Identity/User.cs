@@ -44,5 +44,10 @@ namespace ConvenienceStore.Domain.Entities.Identity
             VerificationCodeExpiresAt = null;
             IsActive = true;
         }
+
+        public void ChangePassword(string newPasswordHash)
+        {
+            PasswordHash = newPasswordHash;
+        }
     }
 }

@@ -12,6 +12,8 @@ namespace ConvenienceStore.Persistence.Mapping.Identity
 
             CreateMap<Profile, ProfileResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
+
+            CreateMap<UpdateProfileRequest, Profile>();
         }
     }
 }
