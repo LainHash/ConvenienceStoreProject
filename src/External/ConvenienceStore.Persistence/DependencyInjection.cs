@@ -91,6 +91,7 @@ namespace ConvenienceStore.Persistence
 
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IProfileService, ProfileService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
