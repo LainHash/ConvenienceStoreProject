@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
+using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Domain.Entities.Storage;
 
@@ -20,6 +21,7 @@ namespace ConvenienceStore.Domain.Entities.Catalog
         public ICollection<ProductImage> ProductImages { get; private set; } = [];
         public ICollection<CartItem> CartItems { get; private set; } = [];
         public ICollection<WishlistItem> WishlistItems { get; private set; } = [];
+        public ICollection<InvoiceDetail> InvoiceDetails { get; private set; } = [];
     }
 
     public partial class Product
