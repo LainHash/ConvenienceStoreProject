@@ -1,5 +1,4 @@
-﻿using ConvenienceStore.Contract.DTOs.Financial;
-using ConvenienceStore.Contract.DTOs.Identity.Profiles;
+﻿using ConvenienceStore.Contract.DTOs.Identity.Profiles;
 using ConvenienceStore.Contract.DTOs.Identity.Users;
 
 namespace ConvenienceStore.Contract.DTOs.Guest.Customers
@@ -10,6 +9,5 @@ namespace ConvenienceStore.Contract.DTOs.Guest.Customers
 
         public UserResponse User { get; set; } = null!;
         public ProfileResponse Profile { get; set; } = null!;
-        public WalletResponse Wallet { get; set; } = null!;
     }
 }
