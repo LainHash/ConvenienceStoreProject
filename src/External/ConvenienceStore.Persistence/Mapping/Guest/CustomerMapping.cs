@@ -11,8 +11,7 @@ namespace ConvenienceStore.Persistence.Mapping.Guest
             CreateMap<Customer, CustomerResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User))
-                .ForMember(dest => dest.Profile, opt => opt.MapFrom(src => src.Profile))
-                .ForMember(dest => dest.Wallet, opt => opt.MapFrom(src => src.Wallet));
+                .ForMember(dest => dest.Profile, opt => opt.MapFrom(src => src.Profile));
         }
     }
 }
