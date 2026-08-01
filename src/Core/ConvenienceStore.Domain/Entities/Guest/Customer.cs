@@ -1,5 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
+using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Identity;
 
 namespace ConvenienceStore.Domain.Entities.Guest
@@ -13,6 +14,9 @@ namespace ConvenienceStore.Domain.Entities.Guest
         public Profile? Profile { get; private set; } = null!;
         public Cart? Cart { get; private set; }
         public Wishlist? Wishlist { get; private set; }
+
+        public Wallet? Wallet { get; private set; } = null!;
+        public ICollection<Invoice> Invoices { get; private set; } = [];
     }
 
     public partial class Customer

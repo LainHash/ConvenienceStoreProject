@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Guest;
 
 namespace ConvenienceStore.Domain.Entities.Identity
@@ -17,6 +17,7 @@ namespace ConvenienceStore.Domain.Entities.Identity
 
         public Role Role { get; private set; } = null!;
         public Customer Customer { get; private set; } = null!;
+        public ICollection<EmailChangeRequest> EmailChangeRequests { get; private set; } = [];
     }
 
     public partial class User
@@ -48,6 +49,11 @@ namespace ConvenienceStore.Domain.Entities.Identity
         public void ChangePassword(string newPasswordHash)
         {
             PasswordHash = newPasswordHash;
+        }
+
+        public void ChangeEmail(string newEmail)
+        {
+            Email = newEmail;
         }
     }
 }

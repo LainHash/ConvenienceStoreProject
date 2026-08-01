@@ -28,6 +28,8 @@ namespace ConvenienceStore.Persistence.Context
         public DbSet<Role> Roles { get; set; } = null!;
         public DbSet<User> Users { get; set; } = null!;
         public DbSet<Profile> Profiles { get; set; } = null!;
+        public DbSet<EmailChangeRequest> EmailChangeRequests { get; set; } = null!;
+
         public DbSet<Customer> Customers { get; set; } = null!;
 
         public DbSet<Cart> Carts { get; set; } = null!;

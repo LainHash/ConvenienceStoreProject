@@ -22,6 +22,11 @@ using ConvenienceStore.Application.Services.Guest;
 using ConvenienceStore.Persistence.Services.Guest;
 using ConvenienceStore.Application.Services.CartAndWishlist;
 using ConvenienceStore.Persistence.Services.CartAndWishlist;
+using ConvenienceStore.Domain.Repositories.Identity;
+using ConvenienceStore.Persistence.Repositories.Identity;
+using ConvenienceStore.Application.Services.Financial;
+using ConvenienceStore.Persistence.Services.Financial;
+
 
 namespace ConvenienceStore.Persistence
 {
@@ -92,10 +97,13 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IProfileService, ProfileService>();
+            services.AddScoped<IEmailChangeService, EmailChangeService>();
 
             services.AddScoped<ICustomerService, CustomerService>();
             services.AddScoped<ICartService, CartService>();
             services.AddScoped<IWishlistService, WishlistService>();
+
+            services.AddScoped<IWalletService, WalletService>();
 
             return services;
         }
