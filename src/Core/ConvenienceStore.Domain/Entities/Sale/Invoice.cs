@@ -13,7 +13,7 @@ namespace ConvenienceStore.Domain.Entities.Sale
         public int? CustomerId { get; private set; }
         public decimal Subtotal { get; private set; }
 
-        public int DiscountId { get; private set; }
+        public int? DiscountId { get; private set; }
         public decimal DiscountAmount { get; private set; }
 
         public decimal ShippingFee { get; private set; }
@@ -24,7 +24,7 @@ namespace ConvenienceStore.Domain.Entities.Sale
         public string? Note { get; private set; }
 
         public Customer? Customer { get; private set; } = null!;
-        public Discount Discount { get; private set; } = null!;
+        public Discount? Discount { get; private set; } = null!;
         public ICollection<InvoiceDetail> InvoiceDetails { get; private set; } = [];
         public ICollection<Payment> Payments { get; private set; } = [];
     }

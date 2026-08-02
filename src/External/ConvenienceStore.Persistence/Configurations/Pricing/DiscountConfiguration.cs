@@ -38,6 +38,10 @@ namespace ConvenienceStore.Persistence.Configurations.Pricing
 
             builder.Property(x => x.MinimumOrderAmount)
                 .HasColumnType("decimal(18,2)");
+
+            builder.Property(x => x.IsActive)
+                .HasDefaultValue(true)
+                .IsRequired();
         }
     }
 }

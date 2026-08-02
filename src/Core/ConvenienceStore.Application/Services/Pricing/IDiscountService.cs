@@ -19,5 +19,9 @@ namespace ConvenienceStore.Application.Services.Pricing
         Task<Result<DiscountResponse>> GetByNameAsync(
             GetDiscountByNameSpecification specification,
             CancellationToken cancellationToken);
+
+        Task<Result<DiscountResponse>> CreateAsync(
+            CreateDiscountRequest body,
+            CancellationToken cancellationToken);
     }
 }

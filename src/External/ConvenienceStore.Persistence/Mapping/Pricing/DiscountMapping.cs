@@ -10,6 +10,8 @@ namespace ConvenienceStore.Persistence.Mapping.Pricing
         {
             CreateMap<Discount, DiscountResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
+
+            CreateMap<CreateDiscountRequest, Discount>();
         }
     }
 }

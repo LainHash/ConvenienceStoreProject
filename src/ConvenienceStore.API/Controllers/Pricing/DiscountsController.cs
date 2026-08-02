@@ -1,9 +1,12 @@
 ﻿using ConvenienceStore.API.Extensions;
+using ConvenienceStore.Application.Features.Pricing.Discounts.Commands.Create;
 using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetAll;
 using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetById;
 using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetByName;
+using ConvenienceStore.Contract.DTOs.Pricing.Discounts;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace ConvenienceStore.API.Controllers.Pricing
 {
@@ -39,6 +42,16 @@ namespace ConvenienceStore.API.Controllers.Pricing
         {
             var query = new GetDiscountByNameQuery(name);
             var result = await _mediator.Send(query, cancellationToken);
+            return this.ToActionResult(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(
+            [FromBody] CreateDiscountRequest body,
+            CancellationToken cancellationToken)
+        {
+            var command = new CreateDiscountCommand(body);
+            var result = await _mediator.Send(command, cancellationToken);
             return this.ToActionResult(result);
         }
     }
