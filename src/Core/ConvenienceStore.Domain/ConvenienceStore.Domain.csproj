@@ -13,7 +13,6 @@
   <ItemGroup>
     <Folder Include="Entities\Personnel\" />
     <Folder Include="Repositories\Financial\" />
-    <Folder Include="Repositories\Pricing\" />
   </ItemGroup>
 
 </Project>

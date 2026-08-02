@@ -20,6 +20,8 @@
 
 	<ItemGroup>
 	  <Folder Include="Features\Financial\" />
+	  <Folder Include="Features\Pricing\Discounts\Commands\" />
+	  <Folder Include="Features\Pricing\Discounts\Queries\GetAll\" />
 	  <Folder Include="Services\Financial\" />
 	</ItemGroup>
 
