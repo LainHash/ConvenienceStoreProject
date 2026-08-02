@@ -21,7 +21,9 @@ namespace ConvenienceStore.Persistence.Context
         public DbSet<Category> Categories { get; set; } = null!;
         public DbSet<Brand> Brands { get; set; } = null!;
         public DbSet<Product> Products { get; set; } = null!;
+
         public DbSet<ProductStock> ProductStocks { get; set; } = null!;
+        public DbSet<ProductPrice> ProductPrices { get; set; } = null!;
 
         public DbSet<Image> Images { get; set; } = null!;
         public DbSet<ProductImage> ProductImages { get; set; } = null!;

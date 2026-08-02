@@ -13,6 +13,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll
         public GetAllProductSpecification(GetAllProductQuery query)
         {
             AddInclude(x => x.ProductStock);
+            AddInclude(x => x.ProductPrice);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
             AddIncludeAggregator(x => x.Include(p => p.ProductImages)
@@ -55,9 +56,9 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll
                     break;
                 case SortField.Price:
                     if (query.Direction == SortDirection.Asc)
-                        ApplyOrderBy(p => p.ProductStock.UnitPrice);
+                        ApplyOrderBy(p => p.ProductPrice.UnitPrice);
                     else
-                        ApplyOrderByDescending(p => p.ProductStock.UnitPrice);
+                        ApplyOrderByDescending(p => p.ProductPrice.UnitPrice);
                     break;
             }
 

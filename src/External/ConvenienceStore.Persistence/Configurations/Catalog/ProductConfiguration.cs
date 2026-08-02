@@ -36,11 +36,6 @@ namespace ConvenienceStore.Persistence.Configurations.Catalog
                 .WithMany(x => x.Products)
                 .HasForeignKey(x => x.BrandId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            builder.HasOne(x => x.ProductStock)
-                .WithOne(x => x.Product)
-                .HasForeignKey<ProductStock>(x => x.ProductId)
-                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

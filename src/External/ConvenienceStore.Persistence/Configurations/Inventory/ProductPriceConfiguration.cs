@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace ConvenienceStore.Persistence.Configurations.Inventory
 {
-    internal class ProductStockConfiguration
-        : IEntityTypeConfiguration<ProductStock>
+    internal class ProductPriceConfiguration
+        : IEntityTypeConfiguration<ProductPrice>
     {
-        public void Configure(EntityTypeBuilder<ProductStock> builder)
+        public void Configure(EntityTypeBuilder<ProductPrice> builder)
         {
-            builder.ToTable("ProductStocks");
+            builder.ToTable("ProductPrices");
 
             builder.HasKey(x => x.Id);
 
@@ -19,15 +19,13 @@ namespace ConvenienceStore.Persistence.Configurations.Inventory
             builder.Property(x => x.PublicId)
                 .IsRequired();
 
-            builder.Property(x => x.Unit)
-                .IsRequired();
-
-            builder.Property(x => x.QuantityOnHand)
+            builder.Property(x => x.UnitPrice)
+                .HasColumnType("decimal(12,3)")
                 .IsRequired();
 
             builder.HasOne(x => x.Product)
-                .WithOne(x => x.ProductStock)
-                .HasForeignKey<ProductStock>(x => x.ProductId)
+                .WithOne(x => x.ProductPrice)
+                .HasForeignKey<ProductPrice>(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
         }
     }

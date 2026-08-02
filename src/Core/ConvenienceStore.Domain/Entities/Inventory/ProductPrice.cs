@@ -3,10 +3,9 @@ using ConvenienceStore.Domain.Entities.Catalog;
 
 namespace ConvenienceStore.Domain.Entities.Inventory
 {
-    public class ProductStock : SoftDeletableEntity
+    public class ProductPrice : SoftDeletableEntity
     {
-        public string Unit { get; private set; } = string.Empty;
-        public int QuantityOnHand {  get; private set; }
+        public decimal UnitPrice { get; private set; }
 
         public int ProductId { get; private set; }
 

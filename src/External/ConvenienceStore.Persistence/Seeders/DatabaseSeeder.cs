@@ -23,6 +23,7 @@ namespace ConvenienceStore.Persistence.Seeders
             await SeedAsync<CategorySeeder>(_context);
             await SeedAsync<BrandSeeder>(_context);
             await SeedAsync<ProductSeeder>(_context);
+            await SeedAsync<ProductPriceSeeder>(_context);
             await SeedAsync<ProductStockSeeder>(_context);
 
             await SeedAsync<ImageSeeder>(_context);
