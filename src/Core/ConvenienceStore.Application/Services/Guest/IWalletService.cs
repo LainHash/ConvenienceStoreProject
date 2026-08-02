@@ -1,8 +1,8 @@
-﻿using ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId;
+﻿using ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId;
 using ConvenienceStore.Application.Models.Results;
 using ConvenienceStore.Contract.DTOs.Financial;
 
-namespace ConvenienceStore.Application.Services.Financial
+namespace ConvenienceStore.Application.Services.Guest
 {
     public interface IWalletService
     {

@@ -1,8 +1,8 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
-using ConvenienceStore.Domain.Entities.Financial;
+using ConvenienceStore.Domain.Entities.Sale;
 using ConvenienceStore.Domain.Enums;
 
-namespace ConvenienceStore.Domain.Entities.Promotion
+namespace ConvenienceStore.Domain.Entities.Pricing
 {
     public class Discount : AuditableEntity
     {

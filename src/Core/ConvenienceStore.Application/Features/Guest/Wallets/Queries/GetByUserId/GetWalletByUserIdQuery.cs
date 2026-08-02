@@ -2,7 +2,7 @@
 using ConvenienceStore.Contract.DTOs.Financial;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId
+namespace ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId
 {
     public record GetWalletByUserIdQuery(string UserId)
         : IRequest<Result<WalletResponse>>

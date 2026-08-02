@@ -1,8 +1,8 @@
-using ConvenienceStore.Domain.Entities.Financial;
+using ConvenienceStore.Domain.Entities.Sale;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ConvenienceStore.Persistence.Configurations.Financial
+namespace ConvenienceStore.Persistence.Configurations.Sale
 {
     internal class InvoiceDetailConfiguration
         : IEntityTypeConfiguration<InvoiceDetail>

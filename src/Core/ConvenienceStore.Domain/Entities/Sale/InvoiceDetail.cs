@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.Catalog;
 
-namespace ConvenienceStore.Domain.Entities.Financial
+namespace ConvenienceStore.Domain.Entities.Sale
 {
     public class InvoiceDetail : SoftDeletableEntity
     {

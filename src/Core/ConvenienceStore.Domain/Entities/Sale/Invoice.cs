@@ -1,9 +1,10 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Guest;
-using ConvenienceStore.Domain.Entities.Promotion;
+using ConvenienceStore.Domain.Entities.Pricing;
 using ConvenienceStore.Domain.Enums;
 
-namespace ConvenienceStore.Domain.Entities.Financial
+namespace ConvenienceStore.Domain.Entities.Sale
 {
     public class Invoice : SoftDeletableEntity
     {

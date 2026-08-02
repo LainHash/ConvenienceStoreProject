@@ -1,8 +1,8 @@
-﻿using ConvenienceStore.Domain.Entities.Promotion;
+﻿using ConvenienceStore.Domain.Entities.Pricing;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ConvenienceStore.Persistence.Configurations.Promotion
+namespace ConvenienceStore.Persistence.Configurations.Pricing
 {
     internal class DiscountConfiguration
         : IEntityTypeConfiguration<Discount>

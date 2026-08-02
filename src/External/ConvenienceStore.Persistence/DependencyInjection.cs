@@ -24,7 +24,6 @@ using ConvenienceStore.Application.Services.CartAndWishlist;
 using ConvenienceStore.Persistence.Services.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Identity;
 using ConvenienceStore.Persistence.Repositories.Identity;
-using ConvenienceStore.Application.Services.Financial;
 using ConvenienceStore.Persistence.Services.Financial;
 
 

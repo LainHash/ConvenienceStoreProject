@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Specifications;
 
-namespace ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId
+namespace ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId
 {
     public class GetWalletByUserIdSpecification
         : BaseSpecification<Wallet>

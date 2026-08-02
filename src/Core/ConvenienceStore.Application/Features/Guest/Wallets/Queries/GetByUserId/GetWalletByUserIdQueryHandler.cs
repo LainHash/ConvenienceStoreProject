@@ -1,9 +1,9 @@
 ﻿using ConvenienceStore.Application.Models.Results;
-using ConvenienceStore.Application.Services.Financial;
+using ConvenienceStore.Application.Services.Guest;
 using ConvenienceStore.Contract.DTOs.Financial;
 using MediatR;
 
-namespace ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId
+namespace ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId
 {
     internal class GetWalletByUserIdQueryHandler(IWalletService walletService)
                 : IRequestHandler<GetWalletByUserIdQuery, Result<WalletResponse>>
