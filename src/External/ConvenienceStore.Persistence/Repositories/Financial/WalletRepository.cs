@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Entities.Financial;
+﻿using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Repositories.Financial;
 using ConvenienceStore.Persistence.Context;
 

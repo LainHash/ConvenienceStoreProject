@@ -1,8 +1,8 @@
-using ConvenienceStore.Domain.Entities.Financial;
+using ConvenienceStore.Domain.Entities.Guest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ConvenienceStore.Persistence.Configurations.Financial
+namespace ConvenienceStore.Persistence.Configurations.Guest
 {
     internal class WalletTransactionConfiguration
         : IEntityTypeConfiguration<WalletTransaction>
@@ -32,9 +32,11 @@ namespace ConvenienceStore.Persistence.Configurations.Financial
                 .IsRequired();
 
             builder.Property(x => x.Type)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(x => x.Status)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(x => x.Description)

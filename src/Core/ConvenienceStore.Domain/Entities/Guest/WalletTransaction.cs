@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Enums;
 
-namespace ConvenienceStore.Domain.Entities.Financial
+namespace ConvenienceStore.Domain.Entities.Guest
 {
     public class WalletTransaction : SoftDeletableEntity
     {

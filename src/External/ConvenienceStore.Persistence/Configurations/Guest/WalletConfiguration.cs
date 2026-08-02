@@ -1,8 +1,8 @@
-using ConvenienceStore.Domain.Entities.Financial;
+using ConvenienceStore.Domain.Entities.Guest;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace ConvenienceStore.Persistence.Configurations.Financial
+namespace ConvenienceStore.Persistence.Configurations.Guest
 {
     internal class WalletConfiguration
         : IEntityTypeConfiguration<Wallet>

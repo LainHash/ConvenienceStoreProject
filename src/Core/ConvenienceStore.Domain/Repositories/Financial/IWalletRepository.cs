@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Entities.Financial;
+﻿using ConvenienceStore.Domain.Entities.Guest;
 
 namespace ConvenienceStore.Domain.Repositories.Financial
 {

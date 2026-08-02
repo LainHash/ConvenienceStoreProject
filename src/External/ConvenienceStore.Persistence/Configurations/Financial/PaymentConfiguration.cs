@@ -24,9 +24,11 @@ namespace ConvenienceStore.Persistence.Configurations.Financial
                 .IsRequired();
 
             builder.Property(x => x.Method)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(x => x.Status)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(x => x.TransactionId)

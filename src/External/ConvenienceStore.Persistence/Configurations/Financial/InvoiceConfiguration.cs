@@ -30,7 +30,7 @@ namespace ConvenienceStore.Persistence.Configurations.Financial
                 .HasColumnType("decimal(18,2)")
                 .IsRequired();
 
-            builder.Property(x => x.Discount)
+            builder.Property(x => x.DiscountAmount)
                 .HasColumnType("decimal(18,2)")
                 .IsRequired()
                 .HasDefaultValue(0m);
@@ -50,6 +50,7 @@ namespace ConvenienceStore.Persistence.Configurations.Financial
                 .IsRequired();
 
             builder.Property(x => x.Status)
+                .HasConversion<string>()
                 .IsRequired();
 
             builder.Property(x => x.Note)
@@ -60,6 +61,11 @@ namespace ConvenienceStore.Persistence.Configurations.Financial
                 .HasForeignKey(x => x.CustomerId)
                 .OnDelete(DeleteBehavior.SetNull)
                 .IsRequired(false);
+
+            builder.HasOne(x => x.Discount)
+                .WithMany(x => x.Invoices)
+                .HasForeignKey(x => x.DiscountId)
+                .OnDelete(DeleteBehavior.SetNull);
         }
     }
 }

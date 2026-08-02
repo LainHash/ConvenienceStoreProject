@@ -1,7 +1,6 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
-using ConvenienceStore.Domain.Entities.Guest;
 
-namespace ConvenienceStore.Domain.Entities.Financial
+namespace ConvenienceStore.Domain.Entities.Guest
 {
     public partial class Wallet : SoftDeletableEntity
     {
@@ -18,6 +17,7 @@ namespace ConvenienceStore.Domain.Entities.Financial
 
     public partial class Wallet
     {
+        public Wallet() { }
         public Wallet(int customerId)
         {
             CustomerId = customerId;

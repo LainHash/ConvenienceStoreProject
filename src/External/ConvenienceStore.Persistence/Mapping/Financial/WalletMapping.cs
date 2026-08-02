@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Contract.DTOs.Financial;
-using ConvenienceStore.Domain.Entities.Financial;
+using ConvenienceStore.Domain.Entities.Guest;
 
 namespace ConvenienceStore.Persistence.Mapping.Financial
 {

@@ -1,4 +1,4 @@
-﻿using ConvenienceStore.Domain.Entities.Financial;
+﻿using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Specifications;
 
 namespace ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId
