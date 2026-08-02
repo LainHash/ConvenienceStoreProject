@@ -1,3 +1,4 @@
+using ConvenienceStore.API.Extensions;
 using ConvenienceStore.Application.Features.Territory.Branches.Commands.Create;
 using ConvenienceStore.Application.Features.Territory.Branches.Commands.Delete;
 using ConvenienceStore.Application.Features.Territory.Branches.Commands.Restore;
@@ -27,7 +28,7 @@ namespace ConvenienceStore.API.Controllers.Territory
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("{id}")]
@@ -37,7 +38,7 @@ namespace ConvenienceStore.API.Controllers.Territory
         {
             var query = new GetBranchByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost]
@@ -47,7 +48,7 @@ namespace ConvenienceStore.API.Controllers.Territory
         {
             var command = new CreateBranchCommand(body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPut("{id}")]
@@ -58,7 +59,7 @@ namespace ConvenienceStore.API.Controllers.Territory
         {
             var command = new UpdateBranchCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpDelete("{id}")]
@@ -68,7 +69,7 @@ namespace ConvenienceStore.API.Controllers.Territory
         {
             var command = new DeleteBranchCommand(id);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("{id}/restore")]
@@ -78,7 +79,7 @@ namespace ConvenienceStore.API.Controllers.Territory
         {
             var command = new RestoreBranchCommand(id);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

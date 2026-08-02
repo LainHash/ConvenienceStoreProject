@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
-using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Identity;
+using ConvenienceStore.Domain.Entities.Sale;
 
 namespace ConvenienceStore.Domain.Entities.Guest
 {

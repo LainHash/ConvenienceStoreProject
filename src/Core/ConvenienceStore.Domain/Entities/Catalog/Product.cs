@@ -1,7 +1,7 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
-using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Inventory;
+using ConvenienceStore.Domain.Entities.Sale;
 using ConvenienceStore.Domain.Entities.Storage;
 
 namespace ConvenienceStore.Domain.Entities.Catalog

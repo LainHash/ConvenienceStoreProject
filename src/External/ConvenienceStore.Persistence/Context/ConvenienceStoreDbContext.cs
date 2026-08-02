@@ -2,9 +2,12 @@
 using ConvenienceStore.Domain.Abstraction;
 using ConvenienceStore.Domain.Entities.CartAndWishlist;
 using ConvenienceStore.Domain.Entities.Catalog;
+using ConvenienceStore.Domain.Entities.Financial;
 using ConvenienceStore.Domain.Entities.Guest;
 using ConvenienceStore.Domain.Entities.Identity;
 using ConvenienceStore.Domain.Entities.Inventory;
+using ConvenienceStore.Domain.Entities.Pricing;
+using ConvenienceStore.Domain.Entities.Sale;
 using ConvenienceStore.Domain.Entities.Storage;
 using ConvenienceStore.Domain.Entities.Territory;
 using Microsoft.EntityFrameworkCore;
@@ -31,11 +34,19 @@ namespace ConvenienceStore.Persistence.Context
         public DbSet<EmailChangeRequest> EmailChangeRequests { get; set; } = null!;
 
         public DbSet<Customer> Customers { get; set; } = null!;
+        public DbSet<Wallet> Wallets { get; set; } = null!;
+        public DbSet<WalletTransaction> WalletTransactions { get; set; } = null!;
 
         public DbSet<Cart> Carts { get; set; } = null!;
         public DbSet<CartItem> CartItems { get; set; } = null!;
         public DbSet<Wishlist> Wishlists { get; set; } = null!;
         public DbSet<WishlistItem> WishlistItems { get; set; } = null!;
+
+        public DbSet<Invoice> Invoices { get; set; } = null!;
+        public DbSet<InvoiceDetail> InvoiceDetails { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
+
+        public DbSet<Discount> Discounts { get; set; } = null!;
 
         // ── Model building ──────────────────────────────────────────────────
         protected override void OnModelCreating(ModelBuilder modelBuilder)

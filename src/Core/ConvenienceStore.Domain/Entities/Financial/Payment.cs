@@ -1,4 +1,5 @@
 ﻿using ConvenienceStore.Domain.Abstraction;
+using ConvenienceStore.Domain.Entities.Sale;
 using ConvenienceStore.Domain.Enums;
 
 namespace ConvenienceStore.Domain.Entities.Financial

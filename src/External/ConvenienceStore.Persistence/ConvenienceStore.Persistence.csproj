@@ -45,6 +45,8 @@
 	<ItemGroup>
 	  <Folder Include="Configurations\Personnel\" />
 	  <Folder Include="Data\" />
+	  <Folder Include="Repositories\Financial\" />
+	  <Folder Include="Services\Financial\" />
 	</ItemGroup>
 
 </Project>

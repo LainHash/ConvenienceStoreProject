@@ -1,3 +1,4 @@
+using ConvenienceStore.API.Extensions;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Create;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Delete;
 using ConvenienceStore.Application.Features.Catalog.Products.Commands.Restore;
@@ -24,7 +25,7 @@ namespace ConvenienceStore.API.Controllers.Catalog
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("{id}")]
@@ -88,7 +89,7 @@ namespace ConvenienceStore.API.Controllers.Catalog
             var command = new UploadProductImageCommand(id, stream, file.FileName, metadata);
 
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

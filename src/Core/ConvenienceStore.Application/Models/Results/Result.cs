@@ -22,5 +22,6 @@ namespace ConvenienceStore.Application.Models.Results
 
         public static Result<T> Fail(string message, HttpStatusCode statusCode = HttpStatusCode.BadRequest)
             => new(default, false, message, statusCode);
+
     }
 }

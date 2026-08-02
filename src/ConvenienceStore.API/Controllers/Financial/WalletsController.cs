@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Financial.Wallets.Queries.GetByUserId;
+﻿using ConvenienceStore.API.Extensions;
+using ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,7 +18,7 @@ namespace ConvenienceStore.API.Controllers.Financial
         {
             var query = new GetWalletByUserIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

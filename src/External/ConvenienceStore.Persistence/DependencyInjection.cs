@@ -24,8 +24,9 @@ using ConvenienceStore.Application.Services.CartAndWishlist;
 using ConvenienceStore.Persistence.Services.CartAndWishlist;
 using ConvenienceStore.Domain.Repositories.Identity;
 using ConvenienceStore.Persistence.Repositories.Identity;
-using ConvenienceStore.Application.Services.Financial;
 using ConvenienceStore.Persistence.Services.Financial;
+using ConvenienceStore.Application.Services.Pricing;
+using ConvenienceStore.Persistence.Services.Pricing;
 
 
 namespace ConvenienceStore.Persistence
@@ -104,6 +105,8 @@ namespace ConvenienceStore.Persistence
             services.AddScoped<IWishlistService, WishlistService>();
 
             services.AddScoped<IWalletService, WalletService>();
+
+            services.AddScoped<IDiscountService, DiscountService>();
 
             return services;
         }

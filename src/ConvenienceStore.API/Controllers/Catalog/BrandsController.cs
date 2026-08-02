@@ -1,3 +1,4 @@
+using ConvenienceStore.API.Extensions;
 using ConvenienceStore.Application.Features.Catalog.Brands.Commands.Create;
 using ConvenienceStore.Application.Features.Catalog.Brands.Commands.Delete;
 using ConvenienceStore.Application.Features.Catalog.Brands.Commands.Restore;
@@ -17,63 +18,63 @@ namespace ConvenienceStore.API.Controllers.Catalog
         private readonly IMediator _mediator = mediator;
 
         [HttpGet]
-        public async Task<ActionResult> GetAll(
+        public async Task<IActionResult> GetAll(
             [FromQuery] GetAllBrandsQuery query,
             CancellationToken cancellationToken)
         {
-            var response = await _mediator.Send(query, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(query, cancellationToken);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult> GetById(
+        public async Task<IActionResult> GetById(
             [FromRoute] string id,
             CancellationToken cancellationToken)
         {
             var query = new GetBrandByIdQuery(id);
-            var response = await _mediator.Send(query, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(query, cancellationToken);
+            return this.ToActionResult(result);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(
+        public async Task<IActionResult> Create(
             [FromBody] CreateBrandRequest request,
             CancellationToken cancellationToken)
         {
             var command = new CreateBrandCommand(request);
-            var response = await _mediator.Send(command, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(command, cancellationToken);
+            return this.ToActionResult(result);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult> Update(
+        public async Task<IActionResult> Update(
             [FromRoute] string id,
             [FromBody] UpdateBrandRequest request,
             CancellationToken cancellationToken)
         {
             var command = new UpdateBrandCommand(id, request);
-            var response = await _mediator.Send(command, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(command, cancellationToken);
+            return this.ToActionResult(result);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(
+        public async Task<IActionResult> Delete(
             [FromRoute] string id,
             CancellationToken cancellationToken)
         {
             var command = new DeleteBrandCommand(id);
-            var response = await _mediator.Send(command, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(command, cancellationToken);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("{id}/restore")]
-        public async Task<ActionResult> Restore(
+        public async Task<IActionResult> Restore(
             [FromRoute] string id,
             CancellationToken cancellationToken)
         {
             var command = new RestoreBrandCommand(id);
-            var response = await _mediator.Send(command, cancellationToken);
-            return StatusCode(response.StatusCode, response);
+            var result = await _mediator.Send(command, cancellationToken);
+            return this.ToActionResult(result);
         }
     }
 }
