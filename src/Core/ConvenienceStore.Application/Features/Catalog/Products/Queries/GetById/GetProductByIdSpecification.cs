@@ -12,7 +12,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetById
         {
             Criteria = x => string.Equals(x.PublicId, query.Id);
             
-            AddInclude(x => x.ProductStocks);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
             AddIncludeAggregator(x => x.Include(p => p.ProductImages)

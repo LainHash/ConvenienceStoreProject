@@ -9,6 +9,8 @@ namespace ConvenienceStore.Contract.DTOs.Catalog.Products
         public string Name { get; set; } = string.Empty;
         public string? Description { get; set; }
 
+        public decimal UnitPrice { get; set; }
+
         public string CategoryName { get; set; } = string.Empty;
         public string BrandName { get; set; } = string.Empty;
 

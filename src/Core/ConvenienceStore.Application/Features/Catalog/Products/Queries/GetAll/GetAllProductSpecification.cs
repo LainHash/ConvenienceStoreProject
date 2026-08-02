@@ -12,7 +12,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Queries.GetAll
     {
         public GetAllProductSpecification(GetAllProductQuery query)
         {
-            AddInclude(x => x.ProductStocks);
             AddInclude(x => x.ProductPrice);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
