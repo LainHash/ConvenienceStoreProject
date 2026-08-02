@@ -18,7 +18,7 @@ namespace ConvenienceStore.Persistence.DataRecords.Territory
 
         public BranchStatus Status { get; set; }
 
-        public TimeOnly OpenTime { get; set; }
-        public TimeOnly CloseTime { get; set; }
+        public TimeSpan OpenTime { get; set; }
+        public TimeSpan CloseTime { get; set; }
     }
 }

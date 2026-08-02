@@ -2,6 +2,7 @@ using ConvenienceStore.Persistence.Context;
 using ConvenienceStore.Persistence.Seeders.Catalog;
 using ConvenienceStore.Persistence.Seeders.Inventory;
 using ConvenienceStore.Persistence.Seeders.Storage;
+using ConvenienceStore.Persistence.Seeders.Territory;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -22,6 +23,7 @@ namespace ConvenienceStore.Persistence.Seeders
         {
             await SeedAsync<CategorySeeder>(_context);
             await SeedAsync<BrandSeeder>(_context);
+            await SeedAsync<BranchSeeder>(_context);
             await SeedAsync<ProductSeeder>(_context);
             await SeedAsync<ProductPriceSeeder>(_context);
             await SeedAsync<ProductStockSeeder>(_context);
