@@ -7,6 +7,7 @@ using ConvenienceStore.Application.Features.Identity.Roles.Queries.GetAll;
 using ConvenienceStore.Contract.DTOs.Identity.Roles;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using ConvenienceStore.API.Extensions;
 
 namespace ConvenienceStore.API.Controllers.Identity
 {
@@ -22,7 +23,7 @@ namespace ConvenienceStore.API.Controllers.Identity
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("{id}")]
@@ -32,7 +33,7 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var query = new GetRoleByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost]
@@ -42,7 +43,7 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var command = new CreateRoleCommand(body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPut("{id}")]
@@ -53,7 +54,7 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var command = new UpdateRoleCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpDelete("{id}")]
@@ -63,7 +64,7 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var command = new DeleteRoleCommand(id);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("{id}/restore")]
@@ -73,7 +74,7 @@ namespace ConvenienceStore.API.Controllers.Identity
         {
             var command = new RestoreRoleCommand(id);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Authentication.Commands.CompleteProfile;
+﻿using ConvenienceStore.API.Extensions;
+using ConvenienceStore.Application.Features.Authentication.Commands.CompleteProfile;
 using ConvenienceStore.Application.Features.Authentication.Commands.Login;
 using ConvenienceStore.Application.Features.Authentication.Commands.Register;
 using ConvenienceStore.Application.Features.Authentication.Commands.ResendVerification;
@@ -22,7 +23,7 @@ namespace ConvenienceStore.API.Controllers.Authentication
         {
             var command = new LoginCommand(body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost("/register")]
@@ -32,7 +33,7 @@ namespace ConvenienceStore.API.Controllers.Authentication
         {
             var command = new RegisterCommand(request);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost("/complete-profile")]
@@ -42,7 +43,7 @@ namespace ConvenienceStore.API.Controllers.Authentication
         {
             var command = new CompleteProfileCommand(request);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost("/verify-email")]
@@ -52,7 +53,7 @@ namespace ConvenienceStore.API.Controllers.Authentication
         {
             var command = new VerifyEmailCommand(request);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost("/resend-verification")]
@@ -62,7 +63,7 @@ namespace ConvenienceStore.API.Controllers.Authentication
         {
             var command = new ResendVerificationCommand(body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

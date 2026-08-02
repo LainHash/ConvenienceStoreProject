@@ -1,22 +1,21 @@
 ﻿using ConvenienceStore.API.Extensions;
-using ConvenienceStore.Application.Features.Guest.Wallets.Queries.GetByUserId;
+using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetAll;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ConvenienceStore.API.Controllers.Financial
+namespace ConvenienceStore.API.Controllers.Pricing
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WalletsController(IMediator mediator) : ControllerBase
+    public class DiscountsController(IMediator mediator) : ControllerBase
     {
         private readonly IMediator _mediator = mediator;
 
-        [HttpGet("/api/Customers/user/{id}/wallet")]
-        public async Task<IActionResult> GetByUser(
-            [FromRoute] string id,
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromQuery] GetAllDiscountsQuery query,
             CancellationToken cancellationToken)
         {
-            var query = new GetWalletByUserIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
             return this.ToActionResult(result);
         }

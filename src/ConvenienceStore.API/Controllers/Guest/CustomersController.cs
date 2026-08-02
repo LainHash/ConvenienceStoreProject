@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
+﻿using ConvenienceStore.API.Extensions;
+using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetAll;
 using ConvenienceStore.Application.Features.Guest.Customers.Queries.GetById;
 using ConvenienceStore.Application.Features.Identity.Profiles.Commands.Update;
 using ConvenienceStore.Application.Features.Identity.Users.Commands.Update;
@@ -21,7 +22,7 @@ namespace ConvenienceStore.API.Controllers.Guest
             CancellationToken cancellationToken)
         {
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("{id}")]
@@ -31,7 +32,7 @@ namespace ConvenienceStore.API.Controllers.Guest
         {
             var query = new GetCustomerByIdQuery(id);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("profile/{id}")]
@@ -42,7 +43,7 @@ namespace ConvenienceStore.API.Controllers.Guest
         {
             var command = new UpdateProfileCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("user/{id}")]
@@ -53,7 +54,7 @@ namespace ConvenienceStore.API.Controllers.Guest
         {
             var command = new UpdateUserCommand(id, body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

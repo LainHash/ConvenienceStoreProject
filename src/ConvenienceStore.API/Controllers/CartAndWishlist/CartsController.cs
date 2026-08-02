@@ -1,4 +1,5 @@
-﻿using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
+﻿using ConvenienceStore.API.Extensions;
+using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.AddItem;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.UpdateItemQuantity;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetByCustomerId;
 using ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.GetBySessionId;
@@ -21,7 +22,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
         {
             var query = new GetCartByCustomerIdQuery(userId);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpGet("/api/Guests/{sessionId}/cart")]
@@ -31,7 +32,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
         {
             var query = new GetCartBySessionIdQuery(sessionId);
             var result = await _mediator.Send(query, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPost("add-item")]
@@ -41,7 +42,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
         {
             var command = new AddCartItemCommand(body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
 
         [HttpPatch("items/{cartItemId}")]
@@ -52,7 +53,7 @@ namespace ConvenienceStore.API.Controllers.CartAndWishlist
         {
             var command = new UpdateCartItemQuantityCommand(cartItemId, body);
             var result = await _mediator.Send(command, cancellationToken);
-            return StatusCode(result.StatusCode, result);
+            return this.ToActionResult(result);
         }
     }
 }

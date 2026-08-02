@@ -19,6 +19,12 @@ namespace ConvenienceStore.Persistence.Configurations.Pricing
             builder.Property(x => x.PublicId)
                 .IsRequired();
 
+            builder.Property(x => x.Name)
+                .IsRequired();
+
+            builder.HasIndex(x => x.Name)
+                .IsUnique();
+
             builder.Property(x => x.Type)
                 .HasConversion<string>()
                 .IsRequired();
