@@ -13,7 +13,7 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.Ge
         {
             AddIncludeAggregator(x => x.Include(c => c.CartItems)
                                         .ThenInclude((CartItem ci) => ci.Product)
-                                        .ThenInclude((Product p) => p.ProductStock));
+                                        .ThenInclude((Product p) => p.ProductStocks));
 
             Criteria = c => string.Equals(c.SessionId, query.SessionId);
             SessionId = query.SessionId;

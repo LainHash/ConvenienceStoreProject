@@ -15,7 +15,7 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Update
             Criteria = p => string.Equals(p.PublicId, command.Id);
             Body = command.Body;
 
-            AddInclude(x => x.ProductStock);
+            AddInclude(x => x.ProductStocks);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
             AddIncludeAggregator(x => x.Include(p => p.ProductImages)

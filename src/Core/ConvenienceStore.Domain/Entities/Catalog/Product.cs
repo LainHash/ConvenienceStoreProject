@@ -16,8 +16,8 @@ namespace ConvenienceStore.Domain.Entities.Catalog
 
         public Category Category { get; private set; } = null!;
         public Brand Brand { get; private set; } = null!;
-        public ProductStock ProductStock { get; private set; } = null!;
         public ProductPrice ProductPrice { get; private set; } = null!;
+        public ICollection<ProductStock> ProductStocks { get; private set; } = [];
 
         public ICollection<ProductImage> ProductImages { get; private set; } = [];
         public ICollection<CartItem> CartItems { get; private set; } = [];

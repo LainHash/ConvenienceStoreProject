@@ -155,7 +155,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.SoftDelete();
-            product.ProductStock.SoftDelete();
+            //product.ProductStocks.SoftDelete();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);
@@ -182,7 +182,7 @@ namespace ConvenienceStore.Persistence.Services.Catalog
             }
 
             product.Restore();
-            product.ProductStock.Restore();
+            //product.ProductStock.Restore();
             _productRepository.Update(product);
 
             await _unitOfWork.SaveChangesAsync(cancellationToken);

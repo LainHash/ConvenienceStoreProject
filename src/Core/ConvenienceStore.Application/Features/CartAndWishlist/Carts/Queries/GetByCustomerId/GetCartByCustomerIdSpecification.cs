@@ -14,7 +14,7 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Queries.Ge
             AddInclude(x => x.Customer);
             AddIncludeAggregator(x => x.Include(c => c.CartItems)
                                         .ThenInclude((CartItem ci) => ci.Product)
-                                        .ThenInclude((Product p) => p.ProductStock));
+                                        .ThenInclude((Product p) => p.ProductStocks));
             UserId = query.UserId;
         }
     }

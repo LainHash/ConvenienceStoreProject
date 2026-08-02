@@ -13,8 +13,7 @@ namespace ConvenienceStore.Persistence.Mapping.CartAndWishlist
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.ProductName, opt => opt.MapFrom(src => src.Product.Name))
                 .ForMember(dest => dest.UnitPrice, opt => opt.MapFrom(src => src.Product.ProductPrice.UnitPrice))
-                .ForMember(dest => dest.LineTotal, opt => opt.MapFrom(src => src.Product.ProductPrice.UnitPrice * src.Quantity))
-                .ForMember(dest => dest.StockStatus, opt => opt.MapFrom(src => src.Product.ProductStock.QuantityOnHand.ToStockStatus()));
+                .ForMember(dest => dest.LineTotal, opt => opt.MapFrom(src => src.Product.ProductPrice.UnitPrice * src.Quantity));
         }
     }
 }

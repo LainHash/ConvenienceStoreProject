@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Application.Services.Business;
-using ConvenienceStore.Domain.Entities.Catalog;
-using ConvenienceStore.Domain.Entities.Storage;
+using ConvenienceStore.Domain.Entities.Territory;
 using ConvenienceStore.Persistence.Context;
-using ConvenienceStore.Persistence.DataRecords.Catalog;
-using ConvenienceStore.Persistence.DataRecords.Storage;
+using ConvenienceStore.Persistence.DataRecords.Territory;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConvenienceStore.Persistence.Seeders.Storage
+namespace ConvenienceStore.Persistence.Seeders.Territory
 {
-    internal class ImageSeeder(
+    internal class BranchSeeder(
         IDataImporter importer,
         IMapper mapper) : IDataSeeder
     {
@@ -18,16 +16,16 @@ namespace ConvenienceStore.Persistence.Seeders.Storage
 
         public async Task SeedAsync(ConvenienceStoreDbContext context)
         {
-            if (await context.Images.AnyAsync())
+            if (await context.Branches.AnyAsync())
                 return;
 
             var records =
-                _importer.Read<ImageRecord>("Images");
+                _importer.Read<BranchRecord>("Branchs");
 
             var entities =
-                _mapper.Map<List<Image>>(records);
+                _mapper.Map<List<Branch>>(records);
 
-            context.Images.AddRange(entities);
+            context.Branches.AddRange(entities);
 
             await context.SaveChangesAsync();
         }

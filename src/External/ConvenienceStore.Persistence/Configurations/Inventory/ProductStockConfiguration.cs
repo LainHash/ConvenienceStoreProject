@@ -26,9 +26,14 @@ namespace ConvenienceStore.Persistence.Configurations.Inventory
                 .IsRequired();
 
             builder.HasOne(x => x.Product)
-                .WithOne(x => x.ProductStock)
-                .HasForeignKey<ProductStock>(x => x.ProductId)
+                .WithMany(x => x.ProductStocks)
+                .HasForeignKey(x => x.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Branch)
+                .WithMany(x => x.ProductStocks)
+                .HasForeignKey(x => x.BranchId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
