@@ -11,7 +11,7 @@ namespace ConvenienceStore.Persistence.Mapping.CartAndWishlist
             CreateMap<Cart, CartResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId))
                 .ForMember(dest => dest.CartItems, opt => opt.MapFrom(src => src.CartItems))
-                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Quantity * x.Product.ProductStock.UnitPrice)));
+                .ForMember(dest => dest.TotalPrice, opt => opt.MapFrom(src => src.CartItems.Sum(x => x.Quantity * x.Product.ProductPrice.UnitPrice)));
         }
     }
 }

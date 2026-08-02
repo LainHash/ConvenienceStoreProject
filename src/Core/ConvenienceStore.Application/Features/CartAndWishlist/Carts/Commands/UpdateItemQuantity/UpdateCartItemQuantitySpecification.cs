@@ -15,7 +15,7 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Carts.Commands.U
         {
             AddIncludeAggregator(x => x.Include(c => c.CartItems)
                                         .ThenInclude((CartItem ci) => ci.Product)
-                                        .ThenInclude((Product p) => p.ProductStock));
+                                        .ThenInclude((Product p) => p.ProductStocks));
             Body = command.Body;
             CartItemId = command.CartItemId;
             Criteria = c => c.CartItems.Any(x => string.Equals(x.PublicId, command.CartItemId));

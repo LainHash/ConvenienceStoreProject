@@ -1,15 +1,13 @@
 ﻿using AutoMapper;
 using ConvenienceStore.Application.Services.Business;
-using ConvenienceStore.Domain.Entities.Catalog;
-using ConvenienceStore.Domain.Entities.Storage;
+using ConvenienceStore.Domain.Entities.Inventory;
 using ConvenienceStore.Persistence.Context;
-using ConvenienceStore.Persistence.DataRecords.Catalog;
-using ConvenienceStore.Persistence.DataRecords.Storage;
+using ConvenienceStore.Persistence.DataRecords.Inventory;
 using Microsoft.EntityFrameworkCore;
 
-namespace ConvenienceStore.Persistence.Seeders.Storage
+namespace ConvenienceStore.Persistence.Seeders.Inventory
 {
-    internal class ImageSeeder(
+    internal class ProductPriceSeeder(
         IDataImporter importer,
         IMapper mapper) : IDataSeeder
     {
@@ -18,16 +16,16 @@ namespace ConvenienceStore.Persistence.Seeders.Storage
 
         public async Task SeedAsync(ConvenienceStoreDbContext context)
         {
-            if (await context.Images.AnyAsync())
+            if (await context.ProductPrices.AnyAsync())
                 return;
 
             var records =
-                _importer.Read<ImageRecord>("Images");
+                _importer.Read<ProductPriceRecord>("ProductPrices");
 
             var entities =
-                _mapper.Map<List<Image>>(records);
+                _mapper.Map<List<ProductPrice>>(records);
 
-            context.Images.AddRange(entities);
+            context.ProductPrices.AddRange(entities);
 
             await context.SaveChangesAsync();
         }

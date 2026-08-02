@@ -19,15 +19,21 @@ namespace ConvenienceStore.Persistence.Configurations.Inventory
             builder.Property(x => x.PublicId)
                 .IsRequired();
 
-            builder.Property(x => x.UnitPrice)
-                .HasColumnType("decimal(12,3)")
-                .IsRequired();
-
             builder.Property(x => x.Unit)
                 .IsRequired();
 
             builder.Property(x => x.QuantityOnHand)
                 .IsRequired();
+
+            builder.HasOne(x => x.Product)
+                .WithMany(x => x.ProductStocks)
+                .HasForeignKey(x => x.ProductId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasOne(x => x.Branch)
+                .WithMany(x => x.ProductStocks)
+                .HasForeignKey(x => x.BranchId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

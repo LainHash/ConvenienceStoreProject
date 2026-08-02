@@ -14,15 +14,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Update
             RuleFor(x => x.Body.Description)
                 .MaximumLength(1000).WithMessage("Description must not exceed 1000 characters.")
                 .When(x => !string.IsNullOrEmpty(x.Body.Description));
-
-            RuleFor(x => x.Body.UnitPrice)
-                .NotEmpty().WithMessage("Unit price is required.");
-
-            RuleFor(x => x.Body.Unit)
-                .NotEmpty().WithMessage("Unit is required.");
-
-            RuleFor(x => x.Body.QuantityOnHand)
-                .NotEmpty().WithMessage("Quantity on hand is required.");
         }
     }
 }

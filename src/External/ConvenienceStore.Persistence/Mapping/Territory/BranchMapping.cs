@@ -9,7 +9,10 @@ namespace ConvenienceStore.Persistence.Mapping.Territory
     {
         public BranchMapping()
         {
-            CreateMap<BranchRecord, Branch>().ReverseMap();
+            CreateMap<BranchRecord, Branch>()
+                .ForMember(dest => dest.OpenTime, opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.OpenTime)))
+                .ForMember(dest => dest.CloseTime, opt => opt.MapFrom(src => TimeOnly.FromTimeSpan(src.CloseTime)));
+
             CreateMap<Branch, BranchResponse>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.PublicId));
             CreateMap<CreateBranchRequest, Branch>();

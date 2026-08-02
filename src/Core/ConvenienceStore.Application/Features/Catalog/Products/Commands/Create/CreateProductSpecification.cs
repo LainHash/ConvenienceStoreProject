@@ -14,7 +14,6 @@ namespace ConvenienceStore.Application.Features.Catalog.Products.Commands.Create
         {
             Body = command.Body;
 
-            AddInclude(x => x.ProductStock);
             AddInclude(x => x.Category);
             AddInclude(x => x.Brand);
             AddIncludeAggregator(x => x.Include(p => p.ProductImages)

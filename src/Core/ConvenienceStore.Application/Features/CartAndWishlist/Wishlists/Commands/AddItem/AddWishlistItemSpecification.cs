@@ -14,7 +14,7 @@ namespace ConvenienceStore.Application.Features.CartAndWishlist.Wishlists.Comman
         {
             AddIncludeAggregator(x => x.Include(c => c.WishlistItems)
                                         .ThenInclude((WishlistItem ci) => ci.Product)
-                                        .ThenInclude((Product p) => p.ProductStock));
+                                        .ThenInclude((Product p) => p.ProductStocks));
 
             Body = command.Body;
         }

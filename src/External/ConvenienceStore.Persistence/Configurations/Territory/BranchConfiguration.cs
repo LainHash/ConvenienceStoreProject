@@ -18,20 +18,45 @@ namespace ConvenienceStore.Persistence.Configurations.Territory
             builder.Property(x => x.PublicId)
                 .IsRequired();
 
-            builder.Property(x => x.Country)
-                .HasMaxLength(60)
+            builder.Property(x => x.Name)
+            .HasMaxLength(100)
+            .IsRequired();
+
+            builder.Property(x => x.Code)
+                .HasMaxLength(20)
                 .IsRequired();
 
-            builder.Property(x => x.City)
-                .HasMaxLength(170)
+            builder.HasIndex(x => x.Code)
+                .IsUnique();
+
+            builder.Property(x => x.PhoneNumber)
+                .HasMaxLength(20)
+                .IsRequired();
+
+            builder.Property(x => x.Email)
+                .HasMaxLength(255)
                 .IsRequired();
 
             builder.Property(x => x.Address)
-                .HasMaxLength(2000)
+                .HasMaxLength(500)
                 .IsRequired();
 
-            builder.Property(x => x.Description)
-                .HasMaxLength(500);
+            builder.Property(x => x.Latitude)
+                .HasPrecision(9, 6);
+
+            builder.Property(x => x.Longitude)
+                .HasPrecision(9, 6);
+
+            builder.Property(x => x.OpenTime)
+                .HasColumnType("time");
+
+            builder.Property(x => x.CloseTime)
+                .HasColumnType("time");
+
+            builder.Property(x => x.Status)
+                .HasConversion<string>()
+                .HasMaxLength(30)
+                .IsRequired();
         }
     }
 }
