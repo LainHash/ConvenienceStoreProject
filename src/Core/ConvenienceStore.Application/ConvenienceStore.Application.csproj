@@ -21,7 +21,6 @@
 	<ItemGroup>
 	  <Folder Include="Features\Financial\" />
 	  <Folder Include="Features\Pricing\Discounts\Commands\" />
-	  <Folder Include="Features\Pricing\Discounts\Queries\GetByName\" />
 	  <Folder Include="Services\Financial\" />
 	</ItemGroup>
 

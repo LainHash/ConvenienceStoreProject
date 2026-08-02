@@ -1,6 +1,7 @@
 ﻿using ConvenienceStore.API.Extensions;
 using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetAll;
 using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetById;
+using ConvenienceStore.Application.Features.Pricing.Discounts.Queries.GetByName;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -27,6 +28,16 @@ namespace ConvenienceStore.API.Controllers.Pricing
             CancellationToken cancellationToken)
         {
             var query = new GetDiscountByIdQuery(id);
+            var result = await _mediator.Send(query, cancellationToken);
+            return this.ToActionResult(result);
+        }
+
+        [HttpGet("name/{name}")]
+        public async Task<IActionResult> GetOneName(
+            [FromRoute] string name,
+            CancellationToken cancellationToken)
+        {
+            var query = new GetDiscountByNameQuery(name);
             var result = await _mediator.Send(query, cancellationToken);
             return this.ToActionResult(result);
         }
